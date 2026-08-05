@@ -185,6 +185,14 @@ st.markdown("""
         display: none !important;
     }
 
+    /* Sol Yan Menüyü (Sidebar) ve Sol Üstteki Ok Simgesini Tamamen Gizleme */
+    [data-testid="stSidebar"], section[data-testid="stSidebar"] {
+        display: none !important;
+    }
+    [data-testid="collapsedControl"], [data-testid="stSidebarCollapseButton"] {
+        display: none !important;
+    }
+
     .footer {
         text-align: center;
         font-size: 0.85rem;
