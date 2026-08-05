@@ -193,6 +193,12 @@ st.markdown("""
         display: none !important;
     }
 
+    /* Streamlit Araç Çubuğu, Sağ Alt Köşe Butonları ve Menüleri Gizleme */
+    div[data-testid="stStatusWidget"], #MainMenu, footer, .stAppViewerToolbar, [data-testid="stToolbar"], [data-testid="stDecoration"], [data-testid="stHeader"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
     .footer {
         text-align: center;
         font-size: 0.85rem;
