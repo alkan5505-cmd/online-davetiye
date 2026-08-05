@@ -194,7 +194,12 @@ st.markdown("""
     }
 
     /* Streamlit Araç Çubuğu, Sağ Alt Köşe Butonları ve Menüleri Gizleme */
-    div[data-testid="stStatusWidget"], #MainMenu, footer, .stAppViewerToolbar, [data-testid="stToolbar"], [data-testid="stDecoration"], [data-testid="stHeader"] {
+    div[data-testid="stStatusWidget"], #MainMenu, footer, .stAppViewerToolbar, [data-testid="stToolbar"], [data-testid="stDecoration"], [data-testid="stHeader"], [data-testid="stAppViewerToolbar"], .stAppToolbar {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    [data-testid="stAppViewerToolbar"], .stAppToolbar, footer {
         display: none !important;
         visibility: hidden !important;
     }
