@@ -200,6 +200,12 @@ st.markdown("""
         opacity: 0 !important;
     }
 
+    /* Sağ Üst Köşedeki Streamlit Üst Menüsünü (Üç Nokta, GitHub ve Share Butonları) Gizleme */
+    header[data-testid="stHeader"], [data-testid="stHeader"], #MainMenu {
+        visibility: hidden !important;
+        display: none !important;
+    }
+
     .footer {
         text-align: center;
         font-size: 0.85rem;
