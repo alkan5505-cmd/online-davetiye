@@ -285,7 +285,7 @@ else:
     # ---------------------------------------------------------
     # GERİ SAYIM SAYACI (CANLI JAVASCRIPT COUNTDOWN)
     # ---------------------------------------------------------
-    st.markdown("<h3 style='text-align: center; font-family: Playfair Display, serif; color: #5a4b41; margin-bottom: 5px;'>Büyük Güne Kalan Zaman</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 class='notranslate' translate='no' style='text-align: center; font-family: Playfair Display, serif; color: #5a4b41; margin-bottom: 5px;'>Büyük Güne Kalan Zaman</h3>", unsafe_allow_html=True)
 
     components.html("""
     <style>
@@ -302,53 +302,90 @@ else:
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
-            padding: 10px 0;
+            gap: 12px;
+            padding: 5px 0;
+            flex-wrap: wrap;
         }
 
         .countdown-box {
             background: linear-gradient(145deg, #ffffff, #f7f1e5);
             border: 1px solid #d4af37;
             border-radius: 12px;
-            padding: 12px 18px;
+            padding: 10px 14px;
             text-align: center;
-            min-width: 70px;
+            min-width: 65px;
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+            box-sizing: border-box;
         }
 
         .countdown-number {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             font-weight: 700;
             color: #b8860b;
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
         .countdown-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             color: #7a6a5d;
             margin-top: 2px;
+        }
+
+        /* Mobil Ekranlar İçin Otomatik Uyumlu (Responsive) @media Kuralları */
+        @media (max-width: 480px) {
+            .countdown-container {
+                gap: 6px;
+            }
+            .countdown-box {
+                padding: 8px 10px;
+                min-width: 55px;
+                border-radius: 10px;
+            }
+            .countdown-number {
+                font-size: 1.3rem;
+            }
+            .countdown-label {
+                font-size: 0.62rem;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        @media (max-width: 340px) {
+            .countdown-container {
+                gap: 4px;
+            }
+            .countdown-box {
+                padding: 6px 8px;
+                min-width: 48px;
+            }
+            .countdown-number {
+                font-size: 1.1rem;
+            }
+            .countdown-label {
+                font-size: 0.58rem;
+            }
         }
     </style>
 
     <div class='countdown-container' id='timer-wrap'>
         <div class='countdown-box'>
             <div class='countdown-number' id='cd-days'>0</div>
-            <div class='countdown-label'>Gün</div>
+            <div class='countdown-label notranslate' translate='no'>GÜN</div>
         </div>
         <div class='countdown-box'>
             <div class='countdown-number' id='cd-hours'>00</div>
-            <div class='countdown-label'>Saat</div>
+            <div class='countdown-label notranslate' translate='no'>SAAT</div>
         </div>
         <div class='countdown-box'>
             <div class='countdown-number' id='cd-minutes'>00</div>
-            <div class='countdown-label'>Dakika</div>
+            <div class='countdown-label notranslate' translate='no'>DAKİKA</div>
         </div>
         <div class='countdown-box'>
             <div class='countdown-number' id='cd-seconds'>00</div>
-            <div class='countdown-label'>Saniye</div>
+            <div class='countdown-label notranslate' translate='no'>SANİYE</div>
         </div>
     </div>
 
