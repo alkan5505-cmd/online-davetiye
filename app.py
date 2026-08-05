@@ -193,15 +193,11 @@ st.markdown("""
         display: none !important;
     }
 
-    /* Streamlit Araç Çubuğu, Sağ Alt Köşe Butonları ve Menüleri Gizleme */
-    div[data-testid="stStatusWidget"], #MainMenu, footer, .stAppViewerToolbar, [data-testid="stToolbar"], [data-testid="stDecoration"], [data-testid="stHeader"], [data-testid="stAppViewerToolbar"], .stAppToolbar {
+    /* Telefonda Sağ Alt Köşedeki Streamlit Rozet ve Profil/Taç İkonlarını Gizleme */
+    [data-testid="stStatusWidget"], .stAppViewerToolbar, .viewerBadge_container__1A522, [class*="viewerBadge"], [class*="profile"], [class*="badge"], [data-testid="stElementToolbar"] {
         display: none !important;
         visibility: hidden !important;
-    }
-
-    [data-testid="stAppViewerToolbar"], .stAppToolbar, footer {
-        display: none !important;
-        visibility: hidden !important;
+        opacity: 0 !important;
     }
 
     .footer {
