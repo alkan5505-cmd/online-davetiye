@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import requests
 from datetime import datetime
@@ -263,43 +264,110 @@ else:
     """, unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # GERİ SAYIM SAYACI (COUNTDOWN)
+    # GERİ SAYIM SAYACI (CANLI JAVASCRIPT COUNTDOWN)
     # ---------------------------------------------------------
-    st.markdown("<h3 style='text-align: center; font-family: Playfair Display; color: #5a4b41;'>Büyük Güne Kalan Zaman</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center; font-family: Playfair Display, serif; color: #5a4b41; margin-bottom: 5px;'>Büyük Güne Kalan Zaman</h3>", unsafe_allow_html=True)
 
-    # Nişan Tarihi: 20 Ağustos 2026 - Saat 19:30
-    wedding_date = datetime(2026, 8, 20, 19, 30, 0)
-    now = datetime.now()
-    diff = wedding_date - now
+    components.html("""
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            font-family: 'Montserrat', sans-serif;
+        }
 
-    if diff.total_seconds() > 0:
-        days = diff.days
-        hours = diff.seconds // 3600
-        minutes = (diff.seconds % 3600) // 60
-        seconds = diff.seconds % 60
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+        }
 
-        st.markdown(f"""
-        <div class='countdown-container'>
-            <div class='countdown-box'>
-                <div class='countdown-number'>{days}</div>
-                <div class='countdown-label'>Gün</div>
-            </div>
-            <div class='countdown-box'>
-                <div class='countdown-number'>{hours}</div>
-                <div class='countdown-label'>Saat</div>
-            </div>
-            <div class='countdown-box'>
-                <div class='countdown-number'>{minutes}</div>
-                <div class='countdown-label'>Dakika</div>
-            </div>
-            <div class='countdown-box'>
-                <div class='countdown-number'>{seconds}</div>
-                <div class='countdown-label'>Saniye</div>
-            </div>
+        .countdown-box {
+            background: linear-gradient(145deg, #ffffff, #f7f1e5);
+            border: 1px solid #d4af37;
+            border-radius: 12px;
+            padding: 12px 18px;
+            text-align: center;
+            min-width: 70px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+        }
+
+        .countdown-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #b8860b;
+            line-height: 1.2;
+        }
+
+        .countdown-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7a6a5d;
+            margin-top: 2px;
+        }
+    </style>
+
+    <div class='countdown-container' id='timer-wrap'>
+        <div class='countdown-box'>
+            <div class='countdown-number' id='cd-days'>0</div>
+            <div class='countdown-label'>Gün</div>
         </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown("<div style='text-align:center; font-weight:bold; color:#b8860b;'>Bugün En Özel Günümüz! 🎉</div>", unsafe_allow_html=True)
+        <div class='countdown-box'>
+            <div class='countdown-number' id='cd-hours'>00</div>
+            <div class='countdown-label'>Saat</div>
+        </div>
+        <div class='countdown-box'>
+            <div class='countdown-number' id='cd-minutes'>00</div>
+            <div class='countdown-label'>Dakika</div>
+        </div>
+        <div class='countdown-box'>
+            <div class='countdown-number' id='cd-seconds'>00</div>
+            <div class='countdown-label'>Saniye</div>
+        </div>
+    </div>
+
+    <script>
+        var targetDate = new Date('2026-08-20T19:30:00').getTime();
+
+        function updateTimer() {
+            var now = new Date().getTime();
+            var diff = targetDate - now;
+
+            if (diff <= 0) {
+                var wrap = document.getElementById('timer-wrap');
+                if (wrap) {
+                    wrap.innerHTML = "<div style='text-align:center; font-weight:bold; color:#b8860b; font-size: 1.2rem;'>Bugün En Özel Günümüz! 🎉</div>";
+                }
+                return;
+            }
+
+            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            var dEl = document.getElementById('cd-days');
+            var hEl = document.getElementById('cd-hours');
+            var mEl = document.getElementById('cd-minutes');
+            var sEl = document.getElementById('cd-seconds');
+
+            if (dEl) dEl.innerText = days;
+            if (hEl) hEl.innerText = hours < 10 ? '0' + hours : hours;
+            if (mEl) mEl.innerText = minutes < 10 ? '0' + minutes : minutes;
+            if (sEl) sEl.innerText = seconds < 10 ? '0' + seconds : seconds;
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    </script>
+    """, height=110)
 
     # ---------------------------------------------------------
     # DÜĞÜN PROGRAMI VE MEKAN BİLGİLERİ
