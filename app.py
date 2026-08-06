@@ -229,7 +229,7 @@ if not st.session_state.opened:
     # ---------------------------------------------------------
     # 2. KARŞILAMA EKRANI VE ORTALI st.button
     # ---------------------------------------------------------
-    sticker_b64 = get_image_base64("top_sticker.jpeg")
+    sticker_b64 = get_image_base64("karikatur.jpeg") or get_image_base64("top_sticker.jpeg")
     if sticker_b64:
         st.markdown(f"""
         <div style='text-align: center; margin: 20px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
@@ -270,7 +270,7 @@ else:
     # ---------------------------------------------------------
     # EN ÜST BÖLÜM: KARİKATÜR GÖRSELİ VE BAŞLIK
     # ---------------------------------------------------------
-    sticker_b64 = get_image_base64("top_sticker.jpeg")
+    sticker_b64 = get_image_base64("karikatur.jpeg") or get_image_base64("top_sticker.jpeg")
     if sticker_b64:
         st.markdown(f"""
         <div style='text-align: center; margin: 15px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
