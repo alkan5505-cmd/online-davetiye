@@ -229,8 +229,26 @@ if not st.session_state.opened:
     # ---------------------------------------------------------
     # 2. KARŞILAMA EKRANI VE ORTALI st.button
     # ---------------------------------------------------------
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown("<div style='text-align: center; font-size: 3.5rem;'>💍</div>", unsafe_allow_html=True)
+    sticker_b64 = get_image_base64("top_sticker.jpeg")
+    if sticker_b64:
+        st.markdown(f"""
+        <div style='text-align: center; margin: 20px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
+            <img src='data:image/jpeg;base64,{sticker_b64}' style='
+                max-width: 250px;
+                width: 80%;
+                height: auto;
+                border-radius: 20px;
+                border: 3px solid #ffffff;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12), 0 4px 15px rgba(212, 175, 55, 0.25);
+                display: block;
+                margin: 0 auto;
+            '>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("<br>", unsafe_allow_html=True)
+
+    st.markdown("<div style='text-align: center; font-size: 3rem;'>💍</div>", unsafe_allow_html=True)
     st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
     st.markdown("<p class='subtitle'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
@@ -250,17 +268,24 @@ else:
         st.audio(audio_url, format="audio/mp3", autoplay=True, loop=True)
 
     # ---------------------------------------------------------
-    # ÜST BÖLÜM: KARŞILAMA VE BAŞLIK GÖRSELLERİ
+    # EN ÜST BÖLÜM: KARİKATÜR GÖRSELİ VE BAŞLIK
     # ---------------------------------------------------------
-    banner_b64 = get_image_base64("sea_sunset_banner.png")
-    if banner_b64:
+    sticker_b64 = get_image_base64("top_sticker.jpeg")
+    if sticker_b64:
         st.markdown(f"""
-        <div class='banner-card'>
-            <img src='data:image/png;base64,{banner_b64}'>
+        <div style='text-align: center; margin: 15px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
+            <img src='data:image/jpeg;base64,{sticker_b64}' style='
+                max-width: 280px;
+                width: 85%;
+                height: auto;
+                border-radius: 20px;
+                border: 3px solid #ffffff;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12), 0 4px 15px rgba(212, 175, 55, 0.25);
+                display: block;
+                margin: 0 auto;
+            '>
         </div>
         """, unsafe_allow_html=True)
-    else:
-        st.markdown("<div style='text-align: center; color: #d4af37; font-size: 1.8rem;'>🌊 🌅 🌊</div>", unsafe_allow_html=True)
 
     st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
     st.markdown("<p class='subtitle'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
