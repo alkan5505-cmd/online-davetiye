@@ -7,6 +7,7 @@ import os
 import base64
 import re
 import time
+import io
 
 # ---------------------------------------------------------
 # Sayfa Yapılandırması (Page Config)
@@ -665,20 +666,27 @@ else:
     st.markdown("---")
     st.markdown("<h4 style='text-align: center; color: #6b1d2f;'>✨ Gelen Güzel Dilekler</h4>", unsafe_allow_html=True)
 
-    # GECİKMESİZ CANLI VERİTABANI BAĞLANTISI (0 Saniye Gecikme)
+    # Google E-Tablo'dan Engellere Takılmadan Canlı Veri Çekme
     sheet_id = "1tQyFvRunLuiR3olth9tO52qDplBybEcVcsn9aBKWXo"
     gid = "1893750835"
-    live_sheet_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}&t={int(time.time())}"
-    backup_sheet_csv_url = f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?output=csv&t={int(time.time())}"
+    live_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}&t={int(time.time())}"
+    backup_csv_url = f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?output=csv&t={int(time.time())}"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
 
     df = None
     try:
-        df = pd.read_csv(live_sheet_csv_url)
+        response = requests.get(live_csv_url, headers=headers, timeout=5)
+        if response.status_code == 200:
+            df = pd.read_csv(io.StringIO(response.text))
+        else:
+            response_backup = requests.get(backup_csv_url, headers=headers, timeout=5)
+            if response_backup.status_code == 200:
+                df = pd.read_csv(io.StringIO(response_backup.text))
     except Exception:
-        try:
-            df = pd.read_csv(backup_sheet_csv_url)
-        except Exception:
-            df = None
+        df = None
 
     if df is not None and not df.empty:
         for index, row in df.iloc[::-1].iterrows():
