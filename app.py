@@ -344,14 +344,24 @@ if not st.session_state.opened:
 
 else:
     # ---------------------------------------------------------
-    # 4. st.session_state.opened True İSE BUTON KALKAR, MÜZİK VE TÜM İÇERİK GÖSTERİLİR
+    # 4. HTML/JS SES OYNATICI (dugun_muzigi.mp3)
     # ---------------------------------------------------------
-    if os.path.exists("dugun_muzigi.mp3"):
-        st.audio("dugun_muzigi.mp3", format="audio/mp3", autoplay=True, loop=True)
-    elif os.path.exists(audio_file):
-        st.audio(audio_file, format="audio/mp3", autoplay=True, loop=True)
+    audio_b64 = get_file_base64("dugun_muzigi.mp3")
+    if audio_b64:
+        st.markdown(f"""
+        <audio autoplay loop id="bg-music">
+            <source src="data:audio/mp3;base64,{audio_b64}" type="audio/mp3">
+            <source src="dugun_muzigi.mp3" type="audio/mp3">
+        </audio>
+        <script>
+            var audio = document.getElementById("bg-music");
+            if (audio) {{
+                audio.play().catch(function(e) {{ console.log("Audio autoplay:", e); }});
+            }}
+        </script>
+        """, unsafe_allow_html=True)
     else:
-        st.audio(audio_url, format="audio/mp3", autoplay=True, loop=True)
+        st.audio("dugun_muzigi.mp3", format="audio/mp3", autoplay=True, loop=True)
 
     # ---------------------------------------------------------
     # ÜST BÖLÜM: DOĞAL ŞEFFAF STİCKER KARİKATÜR GÖRSELİ VE BAŞLIK
