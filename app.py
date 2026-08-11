@@ -246,16 +246,27 @@ if "opened" not in st.session_state:
 # ---------------------------------------------------------
 if not st.session_state.opened:
     # ---------------------------------------------------------
-    # 2. KARŞILAMA EKRANI VE 'giris.mp4' VİDEOSU
+    # 2. VİDEO KARTI VE ÜZERİNDEKİ OVERLAY KATMANI
     # ---------------------------------------------------------
-    st.markdown("<br>", unsafe_allow_html=True)
-    
     video_b64 = get_file_base64("giris.mp4")
     if video_b64:
-        st.markdown(f'<div style="display:flex;justify-content:center;"><video autoplay loop muted playsinline style="width:100%;max-width:380px;border-radius:15px;"><source src="data:video/mp4;base64,{video_b64}" type="video/mp4"></video></div>', unsafe_allow_html=True)
+        st.markdown(f"""
+        <div style='position: relative; width: 100%; max-width: 420px; height: 65vh; max-height: 540px; min-height: 400px; margin: 10px auto 20px auto; border-radius: 22px; overflow: hidden; border: 3px solid #ffffff; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.22), 0 0 20px rgba(212, 175, 55, 0.3); background: #1a1a1a;'>
+            <video autoplay loop muted playsinline preload='auto' style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;'>
+                <source src='data:video/mp4;base64,{video_b64}' type='video/mp4'>
+            </video>
+            <div style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.65) 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;'>
+                <h1 style="font-family: 'Great Vibes', cursive; font-size: 3.8rem; font-style: italic; color: #f3e5ab; margin: 0; text-align: center; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.85), 0 0 15px rgba(212, 175, 55, 0.7);"><i>Gül&Ümit</i></h1>
+                <p style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #ffffff; margin-top: 10px; text-align: center; text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9);">Nişan Davetiyemize Hoş Geldiniz...</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("<br><br>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; font-size: 3.5rem;'>💍</div>", unsafe_allow_html=True)
+        st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
+        st.markdown("<p class='subtitle'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
 
-    st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
-    st.markdown("<p class='subtitle'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
 
     # 3. BUTONA BASILDIGINDA st.session_state.opened = True VE st.rerun()
