@@ -314,7 +314,7 @@ if not st.session_state.opened:
     if video_b64:
         st.markdown(f"""
         <div class="video-hero-card">
-            <video autoplay loop playsinline preload="auto" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+            <video autoplay loop muted playsinline webkit-playsinline preload="metadata" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
                 <source src="data:video/mp4;base64,{video_b64}" type="video/mp4">
             </video>
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.7) 100%); display: flex; flex-direction: column; align-items: center; padding: 35px 15px; box-sizing: border-box;">
