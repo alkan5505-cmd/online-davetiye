@@ -56,6 +56,16 @@ st.markdown("""
 
 
 
+    /* Streamlit Resimlerini Ekranın Tam Merkezine Kilitlenmesi İçin CSS */
+    div[data-testid="stImage"] {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+    div[data-testid="stImage"] > img {
+        margin: 0 auto !important;
+    }
+
     /* Streamlit Üst ve Yan Boşlukları Sıfırlama */
     .stAppViewMainBlockContainer, [data-testid="stMainBlockContainer"], .block-container, [data-testid="stHeader"] {
         padding-top: 0rem !important;
@@ -330,12 +340,10 @@ else:
         st.markdown(f'<audio id="bg-audio" autoplay loop style="display:none;"><source src="{muzik_url}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 1. KARİKATÜR GÖRSELİ (DOĞRUDAN ST.IMAGE İLE ORTALANMIŞ)
+    # 1. KARİKATÜR GÖRSELİ (GLOBAL CSS İLE MİLİMETRİK ORTALANMIŞ)
     # ---------------------------------------------------------
     if os.path.exists("karikatur_yeni.png"):
-        c1, c2, c3 = st.columns([1, 1, 1])
-        with c2:
-            st.image("karikatur_yeni.png", width=180)
+        st.image("karikatur_yeni.png", width=180)
 
     # ---------------------------------------------------------
     # BAŞLIK VE ALT YAZI (TAM ORTALANMIŞ)
@@ -358,9 +366,7 @@ else:
         yuzuk_dosyasi = "engagement_rings_ribbon.png"
 
     if yuzuk_dosyasi:
-        c1, c2, c3 = st.columns([1, 1, 1])
-        with c2:
-            st.image(yuzuk_dosyasi, width=140)
+        st.image(yuzuk_dosyasi, width=140)
 
     st.markdown("""
     <div class='card' style='text-align: center;'>
