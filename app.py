@@ -299,7 +299,7 @@ st.markdown("""
 st.markdown(f"""
 <div id="kapakEkrani" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#fdfbf7; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; box-sizing:border-box;">
     <div style="position:relative; max-width:350px; width:90%; border-radius:15px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.2);">
-        <video autoplay muted playsinline loop style="width:100%; height:auto; display:block;">
+        <video id="girisVideo" autoplay muted playsinline webkit-playsinline loop preload="auto" style="width:100%; height:auto; display:block;">
             <source src="{video_url}" type="video/mp4">
             <source src="giris.mp4" type="video/mp4">
         </video>
@@ -310,6 +310,22 @@ st.markdown(f"""
     </div>
     <button onclick="document.getElementById('kapakEkrani').style.display='none'" style="margin-top:25px; padding:14px 35px; background:#6b1d2f; color:white; border:2px solid #D4AF37; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.15);">Davetiyeyi Aç 💌</button>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {{
+        var v = document.getElementById("girisVideo");
+        if(v) {{
+            v.load();
+            var playPromise = v.play();
+            if (playPromise !== undefined) {{
+                playPromise.catch(function(error) {{
+                    // iOS Düşük Güç Modu engellerse ilk dokunuşta çalıştır
+                    document.addEventListener('touchstart', function() {{ v.play(); }}, {{ once: true }});
+                }});
+            }}
+        }}
+    }});
+</script>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
