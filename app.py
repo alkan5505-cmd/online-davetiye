@@ -308,26 +308,22 @@ if not st.session_state.opened:
     # ---------------------------------------------------------
     st.markdown(f"""
     <div class="video-hero-card">
-        <video autoplay loop muted playsinline id="girisVideo" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+        <video id="girisVideo" autoplay muted playsinline loop style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
             <source src="{video_url}" type="video/mp4">
             <source src="giris.mp4" type="video/mp4">
         </video>
         <script>
-            function davetiyeyiAc() {{
-                var v = document.getElementById("girisVideo");
-                if(v) {{
-                    v.muted = false;
-                    v.play();
+            function sesiAcVeOynat() {{
+                var video = document.getElementById("girisVideo");
+                if (video) {{
+                    video.muted = false;
+                    video.volume = 1.0;
+                    video.play().catch(function(e){{ console.log(e); }});
                 }}
             }}
-            document.addEventListener('touchstart', function() {{
-                var v = document.getElementById("girisVideo");
-                if(v && v.muted) {{ v.muted = false; v.play(); }}
-            }}, {{ once: true }});
-            document.addEventListener('click', function() {{
-                var v = document.getElementById("girisVideo");
-                if(v && v.muted) {{ v.muted = false; v.play(); }}
-            }}, {{ once: true }});
+            // Kullanıcı ekrana veya 'Davetiyeyi Aç' butonuna dokunduğu ilk anda sesi aç
+            document.addEventListener("click", sesiAcVeOynat, {{ once: true }});
+            document.addEventListener("touchstart", sesiAcVeOynat, {{ once: true }});
         </script>
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.7) 100%); display: flex; flex-direction: column; align-items: center; padding: 35px 15px; box-sizing: border-box;">
             <div style="text-align: center; width: 100%;">
