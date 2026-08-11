@@ -308,7 +308,6 @@ st.markdown("""
         color: #8c7a6b;
         margin-top: 40px;
         padding-bottom: 20px;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -316,67 +315,12 @@ st.markdown("""
 # KAPAK GÖSTERİM ALANI (SESSION STATE & ST.AUDIO/ST.BUTTON)
 # ---------------------------------------------------------
 if st.session_state.kapak_acik:
-    st.markdown("""
-        <style>
-        .kapak-kapsayici {
-            position: relative;
-            max-width: 340px;
-            margin: 0 auto 15px auto;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-        }
-        .kapak-video {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 16px;
-            pointer-events: none;
-        }
-        /* iPhone Safari Oynat Simgesini Gizleme Kuralları */
-        video::-webkit-media-controls-start-playback-button,
-        video::-webkit-media-controls {
-            display: none !important;
-            -webkit-appearance: none !important;
-        }
-        .kapak-yazi {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            background: rgba(0, 0, 0, 0.35);
-            color: white; text-align: center;
-            padding: 15px; box-sizing: border-box;
-            pointer-events: none;
-        }
-        .kapak-yazi h1 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 34px !important; margin: 0 0 8px 0 !important;
-            color: #F5E6C8 !important; font-weight: normal !important;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-        }
-        .kapak-yazi p {
-            font-family: 'Playfair Display', serif;
-            font-size: 15px !important; margin: 0 !important;
-            color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-        </style>
-        <div class="kapak-kapsayici">
-            <video autoplay muted playsinline webkit-playsinline loop class="kapak-video">
-                <source src="https://res.cloudinary.com/sovenzsp/video/upload/v1786482075/giris.mp4" type="video/mp4">
-            </video>
-            <div class="kapak-yazi">
-                <h1>Gül ve Ümit</h1>
-                <p>Nişan Davetiyemize Hoş Geldiniz...</p>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("Davetiyeyi Aç 💌", use_container_width=True, type="primary"):
-            st.session_state.kapak_acik = False
-            st.rerun()
+    st.markdown("<h2 style='text-align: center; color: #6b1d2f;'>Gül & Ümit</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
+    st.video("https://res.cloudinary.com/sovenzsp/video/upload/v1786482075/giris.mp4", autoplay=True, loop=True, muted=True)
+    if st.button("Davetiyeyi Aç 💌", use_container_width=True, type="primary"):
+        st.session_state.kapak_acik = False
+        st.rerun()
 else:
     st.audio("https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/dugun_muzigi.mp3", format="audio/mpeg", autoplay=True, loop=True)
     # ---------------------------------------------------------
