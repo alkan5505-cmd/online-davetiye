@@ -250,12 +250,9 @@ if not st.session_state.opened:
     # ---------------------------------------------------------
     st.markdown("<br>", unsafe_allow_html=True)
     
-    if os.path.exists("giris.mp4"):
-        st.video("giris.mp4", autoplay=True, loop=True, muted=True)
-    elif os.path.exists(r"C:\Users\Ümit\Downloads\giris.mp4.mp4"):
-        st.video(r"C:\Users\Ümit\Downloads\giris.mp4.mp4", autoplay=True, loop=True, muted=True)
-    else:
-        st.video("giris.mp4", autoplay=True, loop=True, muted=True)
+    video_b64 = get_file_base64("giris.mp4")
+    if video_b64:
+        st.markdown(f'<div style="display:flex;justify-content:center;"><video autoplay loop muted playsinline style="width:100%;max-width:380px;border-radius:15px;"><source src="data:video/mp4;base64,{video_b64}" type="video/mp4"></video></div>', unsafe_allow_html=True)
 
     st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
     st.markdown("<p class='subtitle'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
