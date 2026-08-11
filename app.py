@@ -33,7 +33,7 @@ def init_files():
 
 init_files()
 
-def get_image_base64(path):
+def get_file_base64(path):
     if os.path.exists(path):
         with open(path, "rb") as f:
             return base64.b64encode(f.read()).decode()
@@ -43,14 +43,16 @@ audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.
 audio_file = "wedding_music.mp3"
 
 # ---------------------------------------------------------
-# Özel CSS Stilleri (Temiz & Lüks Tema)
+# Özel CSS Stilleri (Sade & Lüks Krem Tema)
 # ---------------------------------------------------------
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap');
 
-    .stApp {
-        background: linear-gradient(135deg, #fdfbf7 0%, #f4eae1 50%, #fdfbf7 100%);
+    /* Sade ve Şık Krem Renkli Arka Plan (#f7f3ed) */
+    [data-testid="stAppViewContainer"], .stApp, html, body, [data-testid="stMain"], [data-testid="stMainBlockContainer"], [data-testid="stHeader"] {
+        background-color: #f7f3ed !important;
+        background-image: none !important;
         font-family: 'Montserrat', sans-serif;
         color: #333333;
     }
@@ -91,13 +93,13 @@ st.markdown("""
     }
 
     .card {
-        background-color: rgba(255, 255, 255, 0.85);
+        background-color: rgba(255, 255, 255, 0.88);
         border: 1px solid #e0d5c1;
         border-radius: 18px;
         padding: 25px;
         margin-bottom: 25px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        backdrop-filter: blur(10px);
     }
 
     .countdown-container {
@@ -227,10 +229,49 @@ if "opened" not in st.session_state:
 # ---------------------------------------------------------
 if not st.session_state.opened:
     # ---------------------------------------------------------
-    # 2. KARŞILAMA EKRANI VE ORTALI st.button
+    # 2. KARŞILAMA EKRANI VE 'giris.mp4' VİDEOSU
     # ---------------------------------------------------------
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown("<div style='text-align: center; font-size: 3.5rem;'>💍</div>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    video_b64 = get_file_base64("giris.mp4")
+    if video_b64:
+        st.markdown(f"""
+        <div style='text-align: center; margin: 10px auto 20px auto; width: 100%; display: flex; justify-content: center;'>
+            <video autoplay loop muted playsinline style='
+                max-width: 360px;
+                width: 90%;
+                height: auto;
+                border-radius: 22px;
+                border: 3px solid #ffffff;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 4px 15px rgba(212, 175, 55, 0.3);
+                object-fit: cover;
+                display: block;
+                margin: 0 auto;
+            '>
+                <source src='data:video/mp4;base64,{video_b64}' type='video/mp4'>
+            </video>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        sticker_b64 = get_file_base64("karikatur_yeni.png") or get_file_base64("karikatur.png")
+        if sticker_b64:
+            st.markdown(f"""
+            <div style='text-align: center; margin: 15px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
+                <img src='data:image/png;base64,{sticker_b64}' style='
+                    max-width: 240px;
+                    width: 75%;
+                    height: auto;
+                    border-radius: 18px;
+                    border: 3px solid #ffffff;
+                    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1), 0 3px 12px rgba(212, 175, 55, 0.2);
+                    display: block;
+                    margin: 0 auto;
+                '>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown("<div style='text-align: center; font-size: 3.5rem;'>💍</div>", unsafe_allow_html=True)
+
     st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
     st.markdown("<p class='subtitle'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
@@ -250,15 +291,15 @@ else:
         st.audio(audio_url, format="audio/mp3", autoplay=True, loop=True)
 
     # ---------------------------------------------------------
-    # EN ÜST BÖLÜM: KARİKATÜR GÖRSELİ VE BAŞLIK
+    # ÜST BÖLÜM: KARİKATÜR GÖRSELİ VE BAŞLIK
     # ---------------------------------------------------------
-    sticker_b64 = get_image_base64("karikatur.png") or get_image_base64("karikatur.jpeg") or get_image_base64("top_sticker.jpeg")
+    sticker_b64 = get_image_base64("karikatur_yeni.png") or get_image_base64("karikatur.png") or get_image_base64("top_sticker.jpeg")
     if sticker_b64:
         st.markdown(f"""
         <div style='text-align: center; margin: 15px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
-            <img src='data:image/jpeg;base64,{sticker_b64}' style='
-                max-width: 280px;
-                width: 85%;
+            <img src='data:image/png;base64,{sticker_b64}' style='
+                max-width: 260px;
+                width: 80%;
                 height: auto;
                 border-radius: 20px;
                 border: 3px solid #ffffff;
