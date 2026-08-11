@@ -363,7 +363,7 @@ else:
 
     yuzuk_b64 = resim_b64_oku(yuzuk_yolu)
     if yuzuk_b64:
-        st.markdown(f'<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="data:image/png;base64,{yuzuk_b64}" style="width: 140px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="data:image/png;base64,{yuzuk_b64}" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 3px solid #D4AF37; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: inline-block;"></div>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class='card' style='text-align: center;'>
