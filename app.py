@@ -315,6 +315,7 @@ st.markdown("""
 # KAPAK GÖSTERİM ALANI (SESSION STATE & ST.AUDIO/ST.BUTTON)
 # ---------------------------------------------------------
 if st.session_state.kapak_acik:
+    # Estetik Kapak Tasarımı
     st.markdown("""
         <style>
         .kapak-kutu {
@@ -323,34 +324,23 @@ if st.session_state.kapak_acik:
             margin: 0 auto 15px auto;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
         }
         .kapak-kutu video {
-            width: 100%;
-            display: block;
-            border-radius: 16px;
-            pointer-events: none;
+            width: 100%; height: auto; display: block; border-radius: 16px; pointer-events: none;
         }
         .kapak-yazi-katmani {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            background: rgba(0, 0, 0, 0.35);
-            color: white; text-align: center;
-            padding: 15px; box-sizing: border-box;
-            pointer-events: none;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.35); color: white; text-align: center; padding: 15px; box-sizing: border-box; pointer-events: none;
         }
         .kapak-yazi-katmani h1 {
             font-family: 'Great Vibes', cursive;
-            font-size: 36px !important; margin: 0 0 8px 0 !important;
-            color: #F5E6C8 !important; font-weight: normal !important;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+            font-size: 36px !important; margin: 0 0 8px 0 !important; color: #F5E6C8 !important; font-weight: normal !important; text-shadow: 0 2px 6px rgba(0,0,0,0.8);
         }
         .kapak-yazi-katmani p {
             font-family: 'Playfair Display', serif;
-            font-size: 15px !important; margin: 0 !important;
-            color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            font-size: 15px !important; margin: 0 !important; color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
         </style>
         <div class="kapak-kutu">
@@ -370,7 +360,10 @@ if st.session_state.kapak_acik:
             st.session_state.kapak_acik = False
             st.rerun()
 else:
+    # Ana Davetiye Başlangıcı ve Görsel Müzik Çalar
+    st.markdown("<h4 style='text-align:center; color:#6b1d2f;'>🎵 Nişan Müziğimiz</h4>", unsafe_allow_html=True)
     st.audio("https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/dugun_muzigi.mp3", format="audio/mpeg", autoplay=True, loop=True)
+    st.markdown("---")
     # ---------------------------------------------------------
     # 1. KARİKATÜR GÖRSELİ (DOĞRUDAN GITHUB RAW LINK & SAF HTML)
     # ---------------------------------------------------------
