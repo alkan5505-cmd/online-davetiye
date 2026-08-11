@@ -56,6 +56,13 @@ audio_file = "dugun_muzigi.mp3"
 # ---------------------------------------------------------
 st.markdown("""
 <style>
+    /* iOS WebKit Oynat (Play) Siyah Simgesini Gizle */
+    video::-webkit-media-controls-start-playback-button,
+    video::-webkit-media-controls {
+        display: none !important;
+        -webkit-appearance: none !important;
+    }
+
     @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap');
 
 
@@ -309,7 +316,7 @@ video_source = f'data:video/mp4;base64,{giris_v_b64}' if giris_v_b64 else video_
 st.markdown(f"""
 <div id="kapakEkrani" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#fdfbf7; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; box-sizing:border-box;">
     <div style="position:relative; max-width:350px; width:90%; border-radius:15px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.2);">
-        <video autoplay muted playsinline webkit-playsinline loop style="width:100%; height:auto; display:block;">
+        <video id="girisVideo" autoplay muted playsinline webkit-playsinline loop disablepictureinpicture style="width:100%; height:auto; display:block;">
             <source src="{video_source}" type="video/mp4">
         </video>
         <div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); color:white; padding:15px; box-sizing:border-box; text-shadow:0 2px 6px rgba(0,0,0,0.8);">
@@ -319,6 +326,14 @@ st.markdown(f"""
     </div>
     <button onclick="document.getElementById('kapakEkrani').style.display='none'" style="margin-top:25px; padding:14px 35px; background:#6b1d2f; color:white; border:2px solid #D4AF37; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.15);">Davetiyeyi Aç 💌</button>
 </div>
+
+<script>
+    var v = document.getElementById("girisVideo");
+    if (v) {{
+        v.play().catch(function() {{}});
+        document.addEventListener("touchstart", function() {{ if (v.paused) {{ v.play(); }} }}, {{ once: true }});
+    }}
+</script>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
