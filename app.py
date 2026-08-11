@@ -318,27 +318,20 @@ st.markdown(f"""
         position: fixed;
         top: 0; left: 0;
         width: 100vw; height: 100vh;
-        background: #fdfbf7;
+        background-color: #fdfbf7;
         z-index: 999999;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        box-sizing: border-box;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        padding: 20px; box-sizing: border-box;
     }}
     .kapak-kapsayici-fixed {{
         position: relative;
-        max-width: 360px;
-        width: 90%;
-        border-radius: 16px;
-        overflow: hidden;
+        max-width: 360px; width: 90%;
+        border-radius: 16px; overflow: hidden;
         box-shadow: 0 10px 25px rgba(0,0,0,0.25);
     }}
     .kapak-video-fixed {{
-        width: 100%;
-        display: block;
-        border-radius: 16px;
+        width: 100%; display: block; border-radius: 16px;
     }}
     .kapak-yazi-katmani-fixed {{
         position: absolute;
@@ -361,17 +354,21 @@ st.markdown(f"""
         font-size: 16px !important; margin: 0 !important;
         color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }}
-    .davetiye-buton-fixed {{
-        margin-top: 20px;
+    .davetiye-buton-link {{
+        display: inline-block;
+        margin-top: 25px;
         padding: 14px 35px;
         background-color: #6b1d2f;
-        color: white;
+        color: #ffffff !important;
         border: 2px solid #D4AF37;
         border-radius: 30px;
         font-size: 18px;
         font-weight: bold;
+        text-decoration: none !important;
+        text-align: center;
         cursor: pointer;
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        user-select: none;
     }}
     </style>
 
@@ -387,12 +384,12 @@ st.markdown(f"""
                 <p>Nişan Davetiyemize Hoş Geldiniz...</p>
             </div>
         </div>
-        <button class="davetiye-buton-fixed" onclick="
-            var box = document.getElementById('tamKapakOverlay') || (window.parent && window.parent.document.getElementById('tamKapakOverlay'));
-            if(box) {{ box.style.display = 'none'; }}
-            var audio = document.getElementById('davetiyeSes') || (window.parent && window.parent.document.getElementById('davetiyeSes'));
-            if(audio) {{ audio.play().catch(function(e){{ console.log(e); }}); }}
-        ">Davetiyeyi Aç 💌</button>
+        <a href="javascript:void(0)" class="davetiye-buton-link" onclick="
+            var audio = document.getElementById('davetiyeSes');
+            if (audio) {{ audio.play(); }}
+            var overlay = document.getElementById('tamKapakOverlay');
+            if (overlay) {{ overlay.remove(); }}
+        ">Davetiyeyi Aç 💌</a>
     </div>
 """, unsafe_allow_html=True)
 
