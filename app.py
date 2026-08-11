@@ -40,7 +40,7 @@ def get_file_base64(path):
     return None
 
 audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112674.mp3"
-audio_file = "wedding_music.mp3"
+audio_file = "dugun_muzigi.mp3"
 
 # ---------------------------------------------------------
 # Özel CSS Stilleri (Sade & Lüks Krem Tema)
@@ -229,63 +229,54 @@ if "opened" not in st.session_state:
 # ---------------------------------------------------------
 if not st.session_state.opened:
     # ---------------------------------------------------------
-    # 2. KARŞILAMA EKRANI VE 'giris.mp4' VİDEOSU
+    # 2. VİDEO ARKA PLAN KARTI & ÜZERİNDE ORTALANMIŞ METİN / BUTON (OVERLAY)
     # ---------------------------------------------------------
-    st.markdown("<br>", unsafe_allow_html=True)
-    
     video_b64 = get_file_base64("giris.mp4")
+    
     if video_b64:
         st.markdown(f"""
-        <div style='text-align: center; margin: 10px auto 20px auto; width: 100%; display: flex; justify-content: center;'>
-            <video autoplay loop muted playsinline style='
-                max-width: 360px;
-                width: 90%;
-                height: auto;
-                border-radius: 22px;
-                border: 3px solid #ffffff;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 4px 15px rgba(212, 175, 55, 0.3);
-                object-fit: cover;
-                display: block;
-                margin: 0 auto;
-            '>
+        <div style='position: relative; width: 100%; max-width: 440px; height: 72vh; max-height: 600px; min-height: 460px; margin: 15px auto 0 auto; border-radius: 25px; overflow: hidden; border: 3px solid #ffffff; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), 0 0 20px rgba(212, 175, 55, 0.35);'>
+            <video autoplay loop muted playsinline style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;'>
                 <source src='data:video/mp4;base64,{video_b64}' type='video/mp4'>
             </video>
+            <div style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.65) 100%); display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 28px 15px 35px 15px; box-sizing: border-box;'>
+                <div style='text-align: center; width: 100%;'>
+                    <h1 style="font-family: 'Great Vibes', cursive; font-size: 3.8rem; font-style: italic; color: #f3e5ab; margin: 0; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.6);"><i>Gül&Ümit</i></h1>
+                    <p style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #ffffff; margin-top: 6px; text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Nişan Davetiyemize Hoş Geldiniz...</p>
+                </div>
+            </div>
         </div>
         """, unsafe_allow_html=True)
+        
+        # Butonu videonun alt kısmına üst üste getirmek için negatif margin:
+        st.markdown("<div style='margin-top: -95px; position: relative; z-index: 10;'>", unsafe_allow_html=True)
+        if st.button("Davetiyeyi Aç", use_container_width=True):
+            st.session_state.opened = True
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+
     else:
-        sticker_b64 = get_file_base64("karikatur_yeni.png") or get_file_base64("karikatur.png")
+        sticker_b64 = get_file_base64("karikatur_yeni.png")
         if sticker_b64:
             st.markdown(f"""
             <div style='text-align: center; margin: 15px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
-                <img src='data:image/png;base64,{sticker_b64}' style='
-                    max-width: 240px;
-                    width: 75%;
-                    height: auto;
-                    border-radius: 18px;
-                    border: 3px solid #ffffff;
-                    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1), 0 3px 12px rgba(212, 175, 55, 0.2);
-                    display: block;
-                    margin: 0 auto;
-                '>
+                <img src='data:image/png;base64,{sticker_b64}' style='max-width: 240px; width: 75%; height: auto; border-radius: 18px; border: 3px solid #ffffff; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1), 0 3px 12px rgba(212, 175, 55, 0.2); display: block; margin: 0 auto;'>
             </div>
             """, unsafe_allow_html=True)
-        else:
-            st.markdown("<div style='text-align: center; font-size: 3.5rem;'>💍</div>", unsafe_allow_html=True)
-
-    st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
-    st.markdown("<p class='subtitle'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # 3. BUTONA BASILDIGINDA st.session_state.opened = True VE st.rerun()
-    if st.button("Davetiyeyi Aç", use_container_width=True):
-        st.session_state.opened = True
-        st.rerun()
+        st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
+        st.markdown("<p class='subtitle'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("Davetiyeyi Aç", use_container_width=True):
+            st.session_state.opened = True
+            st.rerun()
 
 else:
     # ---------------------------------------------------------
     # 4. st.session_state.opened True İSE BUTON KALKAR, MÜZİK VE TÜM İÇERİK GÖSTERİLİR
     # ---------------------------------------------------------
-    if os.path.exists(audio_file):
+    if os.path.exists("dugun_muzigi.mp3"):
+        st.audio("dugun_muzigi.mp3", format="audio/mp3", autoplay=True, loop=True)
+    elif os.path.exists(audio_file):
         st.audio(audio_file, format="audio/mp3", autoplay=True, loop=True)
     else:
         st.audio(audio_url, format="audio/mp3", autoplay=True, loop=True)
@@ -293,17 +284,17 @@ else:
     # ---------------------------------------------------------
     # ÜST BÖLÜM: KARİKATÜR GÖRSELİ VE BAŞLIK
     # ---------------------------------------------------------
-    sticker_b64 = get_image_base64("karikatur_yeni.png") or get_image_base64("karikatur.png") or get_image_base64("top_sticker.jpeg")
+    sticker_b64 = get_file_base64("karikatur_yeni.png")
     if sticker_b64:
         st.markdown(f"""
         <div style='text-align: center; margin: 15px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
             <img src='data:image/png;base64,{sticker_b64}' style='
-                max-width: 260px;
-                width: 80%;
+                max-width: 240px;
+                width: 75%;
                 height: auto;
-                border-radius: 20px;
+                border-radius: 18px;
                 border: 3px solid #ffffff;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12), 0 4px 15px rgba(212, 175, 55, 0.25);
+                box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1), 0 3px 12px rgba(212, 175, 55, 0.2);
                 display: block;
                 margin: 0 auto;
             '>
@@ -313,7 +304,7 @@ else:
     st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
     st.markdown("<p class='subtitle'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
 
-    rings_b64 = get_image_base64("engagement_rings_ribbon.png")
+    rings_b64 = get_file_base64("engagement_rings_ribbon.png")
     if rings_b64:
         st.markdown(f"""
         <div style='text-align: center; margin: 15px auto 25px auto;'>
