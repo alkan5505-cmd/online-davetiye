@@ -39,6 +39,23 @@ def get_file_base64(path):
             return base64.b64encode(f.read()).decode()
     return None
 
+def get_video_base64():
+    video_paths = [
+        "giris.mp4",
+        "giris.mp4.mp4",
+        r"C:\Users\Ümit\Downloads\giris.mp4.mp4",
+        r"C:\Users\Ümit\Desktop\giris.mp4.mp4",
+        r"C:\Users\Ümit\Downloads\giris.mp4"
+    ]
+    for path in video_paths:
+        if os.path.exists(path) and os.path.getsize(path) > 1000:
+            try:
+                with open(path, "rb") as f:
+                    return base64.b64encode(f.read()).decode('utf-8')
+            except Exception:
+                continue
+    return None
+
 audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112674.mp3"
 audio_file = "dugun_muzigi.mp3"
 
@@ -231,12 +248,12 @@ if not st.session_state.opened:
     # ---------------------------------------------------------
     # 2. VİDEO ARKA PLAN KARTI & ÜZERİNDE ORTALANMIŞ METİN / BUTON (OVERLAY)
     # ---------------------------------------------------------
-    video_b64 = get_file_base64("giris.mp4")
+    video_b64 = get_video_base64()
     
     if video_b64:
         st.markdown(f"""
-        <div style='position: relative; width: 100%; max-width: 440px; height: 72vh; max-height: 600px; min-height: 460px; margin: 15px auto 0 auto; border-radius: 25px; overflow: hidden; border: 3px solid #ffffff; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), 0 0 20px rgba(212, 175, 55, 0.35);'>
-            <video autoplay loop muted playsinline style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;'>
+        <div style='position: relative; width: 100%; max-width: 440px; height: 72vh; max-height: 600px; min-height: 460px; margin: 15px auto 0 auto; border-radius: 25px; overflow: hidden; border: 3px solid #ffffff; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), 0 0 20px rgba(212, 175, 55, 0.35); background: #1a1a1a;'>
+            <video autoplay loop muted playsinline preload='auto' style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; border-radius: 22px;'>
                 <source src='data:video/mp4;base64,{video_b64}' type='video/mp4'>
             </video>
             <div style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.65) 100%); display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 28px 15px 35px 15px; box-sizing: border-box;'>
