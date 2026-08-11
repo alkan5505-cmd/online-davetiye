@@ -340,11 +340,11 @@ else:
         st.markdown(f'<audio id="bg-audio" autoplay loop style="display:none;"><source src="{muzik_url}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 1. KARİKATÜR GÖRSELİ (B64 DATA URI & HTML ORTALANMIŞ)
+    # 1. KARİKATÜR GÖRSELİ (B64 DATA URI & HTML %100 ORTALANMIŞ)
     # ---------------------------------------------------------
     karikatur_b64 = resim_b64_oku("karikatur_yeni.png")
     if karikatur_b64:
-        st.markdown(f'<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="data:image/png;base64,{karikatur_b64}" style="width: 180px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align: center; width: 100%; margin: 10px 0;"><img src="data:image/png;base64,{karikatur_b64}" style="width: 180px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
     # BAŞLIK VE ALT YAZI (TAM ORTALANMIŞ)
@@ -353,12 +353,12 @@ else:
     st.markdown("<p class='subtitle' style='text-align: center;'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 2. YÜZÜK GÖRSELİ (B64 DATA URI & HTML ORTALANMIŞ)
+    # 2. YÜZÜK GÖRSELİ (B64 DATA URI & HTML %100 ORTALANMIŞ)
     # ---------------------------------------------------------
-    yuzuk_yolu = "nişan_yüzükleri_kurdele.png" if os.path.exists("nişan_yüzükleri_kurdele.png") else "nisan_yuzukleri_kurdele.png"
+    yuzuk_yolu = "nisan_yuzukleri" if os.path.exists("nisan_yuzukleri") else ("nisan_yuzukleri.png" if os.path.exists("nisan_yuzukleri.png") else ("nisan_yuzukleri_kurdele.png" if os.path.exists("nisan_yuzukleri_kurdele.png") else ""))
     yuzuk_b64 = resim_b64_oku(yuzuk_yolu)
     if yuzuk_b64:
-        st.markdown(f'<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="data:image/png;base64,{yuzuk_b64}" style="width: 140px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align: center; width: 100%; margin: 10px 0;"><img src="data:image/png;base64,{yuzuk_b64}" style="width: 140px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class='card' style='text-align: center;'>
