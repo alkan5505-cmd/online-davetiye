@@ -354,19 +354,21 @@ else:
         st.audio(audio_url, format="audio/mp3", autoplay=True, loop=True)
 
     # ---------------------------------------------------------
-    # ÜST BÖLÜM: KARİKATÜR GÖRSELİ VE BAŞLIK
+    # ÜST BÖLÜM: YUVARLAK STİCKER KARİKATÜR GÖRSELİ VE BAŞLIK
     # ---------------------------------------------------------
-    karikatur_b64 = get_file_base64("karikatur_yeni.png") or get_file_base64("karikatur.png")
+    karikatur_b64 = get_file_base64("karikatur_yeni.png")
     if karikatur_b64:
         st.markdown(f"""
-        <div style='text-align: center; margin: 15px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
+        <div style='text-align: center; margin: 20px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
             <img src='data:image/png;base64,{karikatur_b64}' style='
-                max-width: 260px;
-                width: 80%;
-                height: auto;
-                border-radius: 20px;
-                border: 3px solid #ffffff;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12), 0 4px 15px rgba(212, 175, 55, 0.25);
+                width: 220px;
+                height: 220px;
+                max-width: 80vw;
+                max-height: 80vw;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 4px solid #ffffff;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 20px rgba(212, 175, 55, 0.35);
                 display: block;
                 margin: 0 auto;
             '>
