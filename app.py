@@ -33,6 +33,10 @@ def init_files():
 
 init_files()
 
+# GitHub kullanıcı adınızı buraya tanımlayabilirsiniz (Örn: "umit")
+GITHUB_KULLANICI_ADI = "KULLANICI_ADINIZ"
+video_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/giris.mp4"
+
 audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112674.mp3"
 audio_file = "dugun_muzigi.mp3"
 
@@ -285,11 +289,12 @@ if "opened" not in st.session_state:
 # ---------------------------------------------------------
 if not st.session_state.opened:
     # ---------------------------------------------------------
-    # 2. KARŞILAMA EKRANI VE HAFİF YEREL VİDEO KARTI (giris.mp4)
+    # 2. VİDEO KARTI VE ÜZERİNDEKİ OVERLAY KATMANI (GITHUB RAW LINK / YEREL)
     # ---------------------------------------------------------
-    st.markdown("""
+    st.markdown(f"""
     <div class="video-hero-card">
         <video autoplay loop muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+            <source src="{video_url}" type="video/mp4">
             <source src="giris.mp4" type="video/mp4">
         </video>
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.7) 100%); display: flex; flex-direction: column; align-items: center; padding: 35px 15px; box-sizing: border-box;">
