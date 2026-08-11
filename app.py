@@ -629,9 +629,10 @@ else:
     st.markdown("<h3 style='text-align: center; color: #6b1d2f;'>💌 Dilek ve Tebrikleriniz</h3>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Gül & Ümit çiftine iletmek istediğiniz güzel dileklerinizi yazabilirsiniz.</p>", unsafe_allow_html=True)
 
-    FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSddMMZg3SJCstci-0vV_XHhrKvI0Bu5j3knANntQekX7X-36g/viewform"
+    # Google Form Arka Plan Gönderim Adresi
+    FORM_RESPONSE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSddMMZg3SJCstci-0vV_XHhrKvI0Bu5j3knANntQekX7X-36g/formResponse"
 
-    # Yerel Şık Davetiye Formu
+    # Davetiyenin Kendi Şık Formu
     with st.form("dilek_formu", clear_on_submit=True):
         ad_soyad = st.text_input("Adınız ve Soyadınız")
         mesaj = st.text_area("Mesajınız / Notunuz", placeholder="Çiftimize mutluluklar dileriz...")
@@ -640,25 +641,16 @@ else:
         if gonder_btn:
             if ad_soyad.strip() and mesaj.strip():
                 try:
-                    # Form ID'lerini arka planda çekip Google Sheets'e aktarır
-                    html = requests.get(FORM_URL).text
-                    entries = re.findall(r'entry\.(\d+)', html)
-                    unique_entries = list(dict.fromkeys(entries))
-
-                    if len(unique_entries) >= 2:
-                        post_url = FORM_URL.replace('/viewform', '/formResponse')
-                        payload = {
-                            f'entry.{unique_entries[0]}': ad_soyad,
-                            f'entry.{unique_entries[1]}': mesaj
-                        }
-                        res = requests.post(post_url, data=payload)
-                        if res.status_code == 200:
-                            st.success("Güzel dileğiniz iletildi, teşekkür ederiz! ❤️")
-                            st.rerun()
-                        else:
-                            st.error("Gönderilirken bir sorun oluştu, lütfen tekrar deneyin.")
+                    payload = {
+                        "entry.7361262": ad_soyad,
+                        "entry.570319252": mesaj
+                    }
+                    res = requests.post(FORM_RESPONSE_URL, data=payload)
+                    if res.status_code == 200:
+                        st.success("Güzel dileğiniz iletildi, teşekkür ederiz! ❤️")
+                        st.rerun()
                     else:
-                        st.error("Form bağlantısı kurulamadı.")
+                        st.error("Gönderilirken bir sorun oluştu, lütfen tekrar deneyin.")
                 except Exception as e:
                     st.error("Bir hata oluştu, lütfen tekrar deneyin.")
             else:
