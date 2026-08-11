@@ -628,8 +628,8 @@ else:
     st.markdown("<h3 style='text-align: center; color: #6b1d2f;'>💌 Dilek ve Tebrikleriniz</h3>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Gül & Ümit çiftine iletmek istediğiniz güzel dileklerinizi yazabilirsiniz.</p>", unsafe_allow_html=True)
 
-    # 1. Google Form Gönderme Kutusu (İçeride Açar)
-    form_linki = "https://docs.google.com/forms/d/1-146MNO5C-oszfo1rRVL1jk0vFSb9a8lriX0EMI_SSI/viewform?embedded=true"
+    # 1. Doğru Google Form Gönderme Kutusu
+    form_linki = "https://docs.google.com/forms/d/e/1FAIpQLSddMMZg3SJCstci-0vV_XHhrKvI0Bu5j3knANntQekX7X-36g/viewform?embedded=true"
     st.markdown(f'<iframe src="{form_linki}" width="100%" height="480" frameborder="0" marginheight="0" marginwidth="0">Yükleniyor…</iframe>', unsafe_allow_html=True)
 
     st.markdown("---")
