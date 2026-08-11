@@ -33,9 +33,10 @@ def init_files():
 
 init_files()
 
-# GitHub kullanıcı adınızı buraya tanımlayabilirsiniz (Örn: "umit")
-GITHUB_KULLANICI_ADI = "KULLANICI_ADINIZ"
+# GitHub kullanıcı adınız
+GITHUB_KULLANICI_ADI = "alkan5505-cmd"
 video_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/giris.mp4"
+muzik_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/dugun_muzigi.mp3"
 
 audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112674.mp3"
 audio_file = "dugun_muzigi.mp3"
@@ -314,10 +315,12 @@ if not st.session_state.opened:
 
 else:
     # ---------------------------------------------------------
-    # 4. MÜZİK ÇALMA (DOĞRUDAN YEREL DOSYA YOLU)
+    # 4. GITHUB RAW ARKA PLAN MÜZİĞİ (dugun_muzigi.mp3)
     # ---------------------------------------------------------
+    st.markdown(f'<audio autoplay loop src="{muzik_url}"></audio>', unsafe_allow_html=True)
     try:
-        st.audio("dugun_muzigi.mp3", autoplay=True, loop=True)
+        if os.path.exists("dugun_muzigi.mp3"):
+            st.audio("dugun_muzigi.mp3", autoplay=True, loop=True)
     except Exception:
         pass
 
