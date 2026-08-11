@@ -5,6 +5,7 @@ import requests
 from datetime import datetime
 import os
 import base64
+import re
 
 # ---------------------------------------------------------
 # Sayfa Yapılandırması (Page Config)
@@ -622,25 +623,51 @@ else:
                 st.success("Katılım bilginiz kaydoldu. Teşekkür ederiz!")
 
     # ---------------------------------------------------------
-    # DİLEK & TEBRİK ALANI VE FORMU (GOOGLE FORMS & E-TABLO ENTEGRASYONU)
+    # DİLEK & TEBRİK ALANI VE FORMU (NATIVE STREAMLIT & ARKA PLAN GOOGLE SHEETS)
     # ---------------------------------------------------------
     st.markdown("---")
     st.markdown("<h3 style='text-align: center; color: #6b1d2f;'>💌 Dilek ve Tebrikleriniz</h3>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Gül & Ümit çiftine iletmek istediğiniz güzel dileklerinizi yazabilirsiniz.</p>", unsafe_allow_html=True)
 
-    # Sadece Ad Soyad ve Dileğiniz alanlarını gösteren kırpılmış temiz form
-    form_linki = "https://docs.google.com/forms/d/e/1FAIpQLSddMMZg3SJCstci-0vV_XHhrKvI0Bu5j3knANntQekX7X-36g/viewform?embedded=true"
+    FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSddMMZg3SJCstci-0vV_XHhrKvI0Bu5j3knANntQekX7X-36g/viewform"
 
-    st.markdown(f'''
-        <div style="width: 100%; max-width: 550px; margin: 0 auto; height: 380px; overflow: hidden; position: relative; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); background: #ffffff;">
-            <iframe src="{form_linki}" style="position: absolute; top: -175px; left: 0; width: 100%; height: 650px; border: none;">Yükleniyor…</iframe>
-        </div>
-    ''', unsafe_allow_html=True)
+    # Yerel Şık Davetiye Formu
+    with st.form("dilek_formu", clear_on_submit=True):
+        ad_soyad = st.text_input("Adınız ve Soyadınız")
+        mesaj = st.text_area("Mesajınız / Notunuz", placeholder="Çiftimize mutluluklar dileriz...")
+        gonder_btn = st.form_submit_button("Dileğinizi İletin 💫", use_container_width=True)
+
+        if gonder_btn:
+            if ad_soyad.strip() and mesaj.strip():
+                try:
+                    # Form ID'lerini arka planda çekip Google Sheets'e aktarır
+                    html = requests.get(FORM_URL).text
+                    entries = re.findall(r'entry\.(\d+)', html)
+                    unique_entries = list(dict.fromkeys(entries))
+
+                    if len(unique_entries) >= 2:
+                        post_url = FORM_URL.replace('/viewform', '/formResponse')
+                        payload = {
+                            f'entry.{unique_entries[0]}': ad_soyad,
+                            f'entry.{unique_entries[1]}': mesaj
+                        }
+                        res = requests.post(post_url, data=payload)
+                        if res.status_code == 200:
+                            st.success("Güzel dileğiniz iletildi, teşekkür ederiz! ❤️")
+                            st.rerun()
+                        else:
+                            st.error("Gönderilirken bir sorun oluştu, lütfen tekrar deneyin.")
+                    else:
+                        st.error("Form bağlantısı kurulamadı.")
+                except Exception as e:
+                    st.error("Bir hata oluştu, lütfen tekrar deneyin.")
+            else:
+                st.warning("Lütfen hem adınızı hem de mesajınızı doldurun.")
 
     st.markdown("---")
     st.markdown("<h4 style='text-align: center; color: #6b1d2f;'>✨ Gelen Güzel Dilekler</h4>", unsafe_allow_html=True)
 
-    # 2. Google E-Tablo'dan Mesajları Canlı Okuma (Asla Silinmez)
+    # Google E-Tablo'dan Canlı Okuma (Veriler asla silinmez)
     sheet_csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?output=csv"
 
     try:
@@ -648,15 +675,15 @@ else:
         if not df.empty:
             for index, row in df.iloc[::-1].iterrows():
                 ad = row.iloc[1] if len(row) > 1 and pd.notna(row.iloc[1]) else "Anonim"
-                mesaj = row.iloc[2] if len(row) > 2 and pd.notna(row.iloc[2]) else ""
-                if mesaj:
+                not_metni = row.iloc[2] if len(row) > 2 and pd.notna(row.iloc[2]) else ""
+                if not_metni:
                     st.markdown(f"""
                         <div style="background-color: #fcf8f2; border-left: 4px solid #6b1d2f; padding: 12px 16px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                             <strong style="color: #6b1d2f; font-size: 15px;">{ad}</strong><br>
-                            <span style="color: #444; font-size: 14px;">{mesaj}</span>
+                            <span style="color: #444; font-size: 14px;">{not_metni}</span>
                         </div>
                     """, unsafe_allow_html=True)
         else:
             st.info("Henüz dilek yazılmamış. İlk dileği siz yazın! 💫")
     except Exception as e:
-        st.info("Dilekler yükleniyor... Henüz mesaj yazılmamış olabilir.")
+        st.info("Dilekler yükleniyor...")
