@@ -670,13 +670,16 @@ else:
     st.markdown("---")
     st.markdown("<h4 style='text-align: center; color: #6b1d2f;'>✨ Gelen Güzel Dilekler</h4>", unsafe_allow_html=True)
 
-    # 2. Tam Doğru ID İle Google E-Tablo'dan Veri Çekme
+    # 2. Tam Hatasız Google E-Tablo Veri Çekme
     def get_google_sheets_dilekleri():
         sheet_id = "1tQyFvRunLuiR3oIth9tO52qDpIBybEcCvcsn9aBKwXo"
         gid = "1893750835"
+        ts = int(time.time())
+        
         urls = [
-            f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}&t={int(time.time())}",
-            f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?gid={gid}&single=true&output=csv&t={int(time.time())}"
+            f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&gid={gid}&t={ts}",
+            f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}&t={ts}",
+            f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?gid={gid}&single=true&output=csv&t={ts}"
         ]
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
         
@@ -684,21 +687,24 @@ else:
         for url in urls:
             try:
                 res = requests.get(url, headers=headers, timeout=5)
-                if res.status_code == 200 and not res.text.strip().startswith("<") and "Zaman damgası" in res.text:
-                    df = pd.read_csv(io.StringIO(res.text))
+                if res.status_code == 200 and len(res.content) > 10:
+                    if res.content.strip().startswith(b"<"):
+                        continue
+                    # Bayt üzerinden doğrudan UTF-8 okuma (Karakter hatası vermez)
+                    df = pd.read_csv(io.BytesIO(res.content))
                     if not df.empty:
                         for _, row in df.iloc[::-1].iterrows():
-                            vals = [str(v).strip() for v in row.values if pd.notna(v)]
-                            if len(vals) >= 3:
-                                ad = vals[1]
-                                not_metni = vals[2]
-                                if not_metni and not_metni.lower() != "nan":
-                                    dilekler.append((ad, not_metni))
-                            elif len(vals) == 2:
-                                ad = vals[0]
-                                not_metni = vals[1]
-                                if not_metni and not_metni.lower() != "nan":
-                                    dilekler.append((ad, not_metni))
+                            if len(row) >= 3:
+                                ad = str(row.iloc[1]).strip()
+                                not_metni = str(row.iloc[2]).strip()
+                            elif len(row) == 2:
+                                ad = str(row.iloc[0]).strip()
+                                not_metni = str(row.iloc[1]).strip()
+                            else:
+                                continue
+                            
+                            if ad and not_metni and ad.lower() != "nan" and not_metni.lower() != "nan":
+                                dilekler.append((ad, not_metni))
                     if dilekler:
                         break
             except Exception:
