@@ -308,10 +308,28 @@ if not st.session_state.opened:
     # ---------------------------------------------------------
     st.markdown(f"""
     <div class="video-hero-card">
-        <video autoplay loop muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+        <video autoplay loop playsinline controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
             <source src="{video_url}" type="video/mp4">
             <source src="giris.mp4" type="video/mp4">
         </video>
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {{
+                let video = document.querySelector('video');
+                if (video) {{
+                    video.muted = false;
+                    let playPromise = video.play();
+                    if (playPromise !== undefined) {{
+                        playPromise.catch(error => {{
+                            // Otomatik ses engellenirse ilk tıklamada sesi aç
+                            document.body.addEventListener('click', () => {{
+                                video.muted = false;
+                                video.play();
+                            }}, {{ once: true }});
+                        }});
+                    }}
+                }}
+            }});
+        </script>
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.7) 100%); display: flex; flex-direction: column; align-items: center; padding: 35px 15px; box-sizing: border-box;">
             <div style="text-align: center; width: 100%;">
                 <h1 style="font-family: 'Great Vibes', cursive; font-size: 4rem; font-style: italic; color: #f3e5ab; margin: 0; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.85), 0 0 15px rgba(212, 175, 55, 0.65);"><i>Gül&Ümit</i></h1>
