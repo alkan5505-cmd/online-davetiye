@@ -315,14 +315,11 @@ if not st.session_state.opened:
 
 else:
     # ---------------------------------------------------------
-    # 4. GITHUB RAW ARKA PLAN MÜZİĞİ (dugun_muzigi.mp3)
+    # 4. TEK SEFERLİK ÇAKIŞMASIZ ARKA PLAN MÜZİĞİ (SESSION STATE KONTROLLÜ)
     # ---------------------------------------------------------
-    st.markdown(f'<audio autoplay loop src="{muzik_url}"></audio>', unsafe_allow_html=True)
-    try:
-        if os.path.exists("dugun_muzigi.mp3"):
-            st.audio("dugun_muzigi.mp3", autoplay=True, loop=True)
-    except Exception:
-        pass
+    if 'muzik_calindi' not in st.session_state:
+        st.session_state['muzik_calindi'] = True
+        st.markdown(f'<audio id="bg-audio" autoplay loop style="display:none;"><source src="{muzik_url}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
     # ÜST BÖLÜM: DOĞAL STİCKER KARİKATÜR GÖRSELİ VE BAŞLIK
