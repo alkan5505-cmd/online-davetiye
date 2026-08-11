@@ -56,6 +56,22 @@ def get_video_base64():
                 continue
     return None
 
+def get_audio_base64():
+    audio_paths = [
+        "dugun_muzigi.mp3",
+        "dugun_muzigi.mp3.mp3",
+        r"C:\Users\Ümit\Downloads\dugun_muzigi.mp3.mp3",
+        r"C:\Users\Ümit\Downloads\dugun_muzigi.mp3"
+    ]
+    for path in audio_paths:
+        if os.path.exists(path) and os.path.getsize(path) > 1000:
+            try:
+                with open(path, "rb") as f:
+                    return base64.b64encode(f.read()).decode('utf-8')
+            except Exception:
+                continue
+    return None
+
 audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112674.mp3"
 audio_file = "dugun_muzigi.mp3"
 
@@ -344,24 +360,30 @@ if not st.session_state.opened:
 
 else:
     # ---------------------------------------------------------
-    # 4. HTML/JS SES OYNATICI (dugun_muzigi.mp3)
+    # 4. KESİN ÇALIŞAN BASE64 HTML/JS SES OYNATICI (dugun_muzigi.mp3)
     # ---------------------------------------------------------
-    audio_b64 = get_file_base64("dugun_muzigi.mp3")
+    audio_b64 = get_audio_base64()
     if audio_b64:
         st.markdown(f"""
-        <audio autoplay loop id="bg-music">
+        <audio id="bg-music" autoplay loop style="display:none;">
             <source src="data:audio/mp3;base64,{audio_b64}" type="audio/mp3">
-            <source src="dugun_muzigi.mp3" type="audio/mp3">
         </audio>
         <script>
-            var audio = document.getElementById("bg-music");
-            if (audio) {{
-                audio.play().catch(function(e) {{ console.log("Audio autoplay:", e); }});
+            try {{
+                var aud = document.getElementById('bg-music') || window.parent.document.querySelector('audio');
+                if (aud) {{
+                    aud.play().catch(function(err) {{ console.log("Audio play caught:", err); }});
+                }}
+            }} catch(e) {{
+                console.log(e);
             }}
         </script>
         """, unsafe_allow_html=True)
     else:
-        st.audio("dugun_muzigi.mp3", format="audio/mp3", autoplay=True, loop=True)
+        try:
+            st.audio("dugun_muzigi.mp3", format="audio/mp3", autoplay=True, loop=True)
+        except Exception:
+            pass
 
     # ---------------------------------------------------------
     # ÜST BÖLÜM: DOĞAL ŞEFFAF STİCKER KARİKATÜR GÖRSELİ VE BAŞLIK
