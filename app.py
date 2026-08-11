@@ -40,6 +40,14 @@ muzik_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-da
 
 
 
+def video_b64_oku(dosya_yolu="giris.mp4"):
+    if os.path.exists(dosya_yolu):
+        with open(dosya_yolu, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    return ""
+
+giris_v_b64 = video_b64_oku("giris.mp4")
+
 audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112674.mp3"
 audio_file = "dugun_muzigi.mp3"
 
@@ -294,14 +302,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# SAF HTML / JS SADE KAPAK EKRANI (SES DÖNGÜSÜZ & KESİNTİSİZ MUTE VIDEO)
+# SAF HTML / JS SADE KAPAK EKRANI (BASE64 VİDEO GÖMÜLÜ - IPHONE UYUMLU)
 # ---------------------------------------------------------
+video_source = f'data:video/mp4;base64,{giris_v_b64}' if giris_v_b64 else video_url
+
 st.markdown(f"""
 <div id="kapakEkrani" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#fdfbf7; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; box-sizing:border-box;">
     <div style="position:relative; max-width:350px; width:90%; border-radius:15px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.2);">
-        <video id="girisVideo" autoplay muted playsinline webkit-playsinline loop preload="auto" style="width:100%; height:auto; display:block;">
-            <source src="{video_url}" type="video/mp4">
-            <source src="giris.mp4" type="video/mp4">
+        <video autoplay muted playsinline webkit-playsinline loop style="width:100%; height:auto; display:block;">
+            <source src="{video_source}" type="video/mp4">
         </video>
         <div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); color:white; padding:15px; box-sizing:border-box; text-shadow:0 2px 6px rgba(0,0,0,0.8);">
             <h1 style="font-family: 'Great Vibes', cursive; font-size:36px; margin:0 0 10px 0; color:#F5E6C8; font-weight:normal; letter-spacing:1px;"><i>Gül&Ümit</i></h1>
@@ -310,22 +319,6 @@ st.markdown(f"""
     </div>
     <button onclick="document.getElementById('kapakEkrani').style.display='none'" style="margin-top:25px; padding:14px 35px; background:#6b1d2f; color:white; border:2px solid #D4AF37; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.15);">Davetiyeyi Aç 💌</button>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {{
-        var v = document.getElementById("girisVideo");
-        if(v) {{
-            v.load();
-            var playPromise = v.play();
-            if (playPromise !== undefined) {{
-                playPromise.catch(function(error) {{
-                    // iOS Düşük Güç Modu engellerse ilk dokunuşta çalıştır
-                    document.addEventListener('touchstart', function() {{ v.play(); }}, {{ once: true }});
-                }});
-            }}
-        }}
-    }});
-</script>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
