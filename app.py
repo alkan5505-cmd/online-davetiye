@@ -33,45 +33,6 @@ def init_files():
 
 init_files()
 
-def get_file_base64(path):
-    if os.path.exists(path):
-        with open(path, "rb") as f:
-            return base64.b64encode(f.read()).decode()
-    return None
-
-def get_video_base64():
-    video_paths = [
-        "giris.mp4",
-        "giris.mp4.mp4",
-        r"C:\Users\Ümit\Downloads\giris.mp4.mp4",
-        r"C:\Users\Ümit\Desktop\giris.mp4.mp4",
-        r"C:\Users\Ümit\Downloads\giris.mp4"
-    ]
-    for path in video_paths:
-        if os.path.exists(path) and os.path.getsize(path) > 1000:
-            try:
-                with open(path, "rb") as f:
-                    return base64.b64encode(f.read()).decode('utf-8')
-            except Exception:
-                continue
-    return None
-
-def get_audio_base64(file_name="dugun_muzigi.mp3"):
-    try:
-        if os.path.exists(file_name):
-            with open(file_name, "rb") as f:
-                return base64.b64encode(f.read()).decode()
-        elif os.path.exists(r"C:\Users\Ümit\Downloads\dugun_muzigi.mp3.mp3"):
-            with open(r"C:\Users\Ümit\Downloads\dugun_muzigi.mp3.mp3", "rb") as f:
-                return base64.b64encode(f.read()).decode()
-    except:
-        return ""
-    return ""
-
-# GitHub kullanıcı adınızı buraya tanımlayabilirsiniz (Örn: "umit")
-GITHUB_KULLANICI_ADI = "KULLANICI_ADINIZ"
-muzik_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/dugun_muzigi.mp3"
-
 audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112674.mp3"
 audio_file = "dugun_muzigi.mp3"
 
@@ -324,98 +285,52 @@ if "opened" not in st.session_state:
 # ---------------------------------------------------------
 if not st.session_state.opened:
     # ---------------------------------------------------------
-    # 2. VİDEO KARTI & 'position: absolute; bottom: 30px;' OVERLAY BUTON
+    # 2. KARŞILAMA EKRANI VE HAFİF YEREL VİDEO KARTI (giris.mp4)
     # ---------------------------------------------------------
-    video_b64 = get_video_base64()
-    if video_b64:
-        st.markdown(f"""
-        <div class="video-hero-card">
-            <video autoplay loop muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
-                <source src="data:video/mp4;base64,{video_b64}" type="video/mp4">
-            </video>
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.7) 100%); display: flex; flex-direction: column; align-items: center; padding: 35px 15px; box-sizing: border-box;">
-                <div style="text-align: center; width: 100%;">
-                    <h1 style="font-family: 'Great Vibes', cursive; font-size: 4rem; font-style: italic; color: #f3e5ab; margin: 0; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.85), 0 0 15px rgba(212, 175, 55, 0.65);"><i>Gül&Ümit</i></h1>
-                    <p style="font-family: 'Playfair Display', serif; font-size: 1.25rem; color: #ffffff; margin-top: 8px; text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9);">Nişan Davetiyemize Hoş Geldiniz...</p>
-                </div>
+    st.markdown("""
+    <div class="video-hero-card">
+        <video autoplay loop muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+            <source src="giris.mp4" type="video/mp4">
+        </video>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.7) 100%); display: flex; flex-direction: column; align-items: center; padding: 35px 15px; box-sizing: border-box;">
+            <div style="text-align: center; width: 100%;">
+                <h1 style="font-family: 'Great Vibes', cursive; font-size: 4rem; font-style: italic; color: #f3e5ab; margin: 0; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.85), 0 0 15px rgba(212, 175, 55, 0.65);"><i>Gül&Ümit</i></h1>
+                <p style="font-family: 'Playfair Display', serif; font-size: 1.25rem; color: #ffffff; margin-top: 8px; text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9);">Nişan Davetiyemize Hoş Geldiniz...</p>
             </div>
-            <div class="hero-btn-container">
-        """, unsafe_allow_html=True)
+        </div>
+        <div class="hero-btn-container">
+    """, unsafe_allow_html=True)
 
-        if st.button("Davetiyeyi Aç", use_container_width=True, key="hero_btn_open"):
-            st.session_state.opened = True
-            st.rerun()
+    if st.button("Davetiyeyi Aç", use_container_width=True, key="hero_btn_open"):
+        st.session_state.opened = True
+        st.rerun()
 
-        st.markdown("</div></div>", unsafe_allow_html=True)
-
-    else:
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align: center; font-size: 3.5rem;'>💍</div>", unsafe_allow_html=True)
-        st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
-        st.markdown("<p class='subtitle'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("Davetiyeyi Aç", use_container_width=True):
-            st.session_state.opened = True
-            st.rerun()
+    st.markdown("</div></div>", unsafe_allow_html=True)
 
 else:
     # ---------------------------------------------------------
-    # 4. KESİN ÇALIŞAN BASE64 HTML/JS SES OYNATICI (dugun_muzigi.mp3)
+    # 4. MÜZİK ÇALMA (DOĞRUDAN YEREL DOSYA YOLU)
     # ---------------------------------------------------------
-    audio_b64 = get_audio_base64()
-    if audio_b64:
-        st.markdown(f"""
-        <audio id="bg-music" autoplay loop style="display:none;">
-            <source src="data:audio/mp3;base64,{audio_b64}" type="audio/mp3">
-        </audio>
-        <script>
-            try {{
-                var aud = document.getElementById('bg-music') || window.parent.document.querySelector('audio');
-                if (aud) {{
-                    aud.play().catch(function(err) {{ console.log("Audio play caught:", err); }});
-                }}
-            }} catch(e) {{
-                console.log(e);
-            }}
-        </script>
-        """, unsafe_allow_html=True)
-    else:
-        try:
-            st.audio("dugun_muzigi.mp3", format="audio/mp3", autoplay=True, loop=True)
-        except Exception:
-            pass
+    try:
+        st.audio("dugun_muzigi.mp3", autoplay=True, loop=True)
+    except Exception:
+        pass
 
     # ---------------------------------------------------------
-    # ÜST BÖLÜM: DOĞAL ŞEFFAF STİCKER KARİKATÜR GÖRSELİ VE BAŞLIK
+    # ÜST BÖLÜM: DOĞAL STİCKER KARİKATÜR GÖRSELİ VE BAŞLIK
     # ---------------------------------------------------------
-    karikatur_b64 = get_file_base64("karikatur_yeni.png")
-    if karikatur_b64:
-        st.markdown(f"""
-        <div style='text-align: center; margin: 20px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
-            <img src='data:image/png;base64,{karikatur_b64}' style='
-                max-width: 240px;
-                width: 80%;
-                height: auto;
-                display: block;
-                margin: 0 auto;
-                background: transparent;
-                border: none;
-                box-shadow: none;
-                border-radius: 0;
-            '>
-        </div>
-        """, unsafe_allow_html=True)
+    if os.path.exists("karikatur_yeni.png"):
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.image("karikatur_yeni.png", use_container_width=True)
 
     st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
     st.markdown("<p class='subtitle'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
 
-    rings_b64 = get_file_base64("engagement_rings_ribbon.png")
-    if rings_b64:
-        st.markdown(f"""
-        <div style='text-align: center; margin: 15px auto 25px auto;'>
-            <img src='data:image/png;base64,{rings_b64}' style='width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 3px solid #d4af37; box-shadow: 0 6px 20px rgba(212,175,55,0.25); display: block; margin: 0 auto;'>
-        </div>
-        """, unsafe_allow_html=True)
+    if os.path.exists("engagement_rings_ribbon.png"):
+        col1, col2, col3 = st.columns([1, 1, 1])
+        with col2:
+            st.image("engagement_rings_ribbon.png", use_container_width=True)
     else:
         st.markdown("<div style='text-align: center; font-size: 3rem;'>💍</div>", unsafe_allow_html=True)
 
