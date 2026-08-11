@@ -312,326 +312,381 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# KAPAK GÖSTERİM ALANI (SESSION STATE & ST.AUDIO/ST.BUTTON)
+# KAPAK GÖSTERİM VE İOS SAFARİ AUTOPLAY ALANI (SAF HTML/JS)
 # ---------------------------------------------------------
-if st.session_state.kapak_acik:
-    # Estetik Kapak Tasarımı
-    st.markdown("""
-        <style>
-        .kapak-kutu {
-            position: relative;
-            max-width: 350px;
-            margin: 0 auto 15px auto;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-        }
-        .kapak-kutu video {
-            width: 100%; height: auto; display: block; border-radius: 16px; pointer-events: none;
-        }
-        .kapak-yazi-katmani {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: rgba(0, 0, 0, 0.35); color: white; text-align: center; padding: 15px; box-sizing: border-box; pointer-events: none;
-        }
-        .kapak-yazi-katmani h1 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 36px !important; margin: 0 0 8px 0 !important; color: #F5E6C8 !important; font-weight: normal !important; text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-        }
-        .kapak-yazi-katmani p {
-            font-family: 'Playfair Display', serif;
-            font-size: 15px !important; margin: 0 !important; color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-        </style>
+st.markdown("""
+    <style>
+    #kapakOverlay {
+        position: fixed; top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background-color: #fdfbf7;
+        z-index: 9999999;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        padding: 20px; box-sizing: border-box;
+    }
+    .kapak-kutu {
+        position: relative;
+        max-width: 340px; width: 90%;
+        border-radius: 16px; overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    .kapak-kutu video {
+        width: 100%; height: auto; display: block; border-radius: 16px;
+        pointer-events: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+    }
+    /* iOS Safari Play Simgesi Engelleme Kuralları */
+    video::-webkit-media-controls,
+    video::-webkit-media-controls-start-playback-button,
+    video::-webkit-media-controls-play-button,
+    video::-webkit-media-controls-panel {
+        display: none !important;
+        -webkit-appearance: none !important;
+        opacity: 0 !important;
+    }
+    .kapak-yazi-katmani {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        background: rgba(0, 0, 0, 0.35);
+        color: white; text-align: center;
+        padding: 15px; box-sizing: border-box;
+        pointer-events: none;
+    }
+    .kapak-yazi-katmani h1 {
+        font-family: 'Great Vibes', cursive;
+        font-size: 34px !important; margin: 0 0 8px 0 !important;
+        color: #F5E6C8 !important; font-weight: normal !important;
+        text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+    }
+    .kapak-yazi-katmani p {
+        font-family: 'Playfair Display', serif;
+        font-size: 15px !important; margin: 0 !important;
+        color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    .ozel-ac-butonu {
+        margin-top: 25px;
+        padding: 14px 35px;
+        background-color: #6b1d2f;
+        color: #ffffff !important;
+        border: 2px solid #D4AF37;
+        border-radius: 30px;
+        font-size: 18px; font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        z-index: 10000000;
+    }
+    </style>
+
+    <audio id="nisanMuzigi" src="https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/dugun_muzigi.mp3" loop preload="auto"></audio>
+
+    <div id="kapakOverlay">
         <div class="kapak-kutu">
-            <video autoplay muted playsinline webkit-playsinline loop>
-                <source src="https://res.cloudinary.com/sovenzsp/video/upload/ac_none,vc_h264,q_auto,f_mp4/v1786482075/giris.mp4" type="video/mp4">
+            <video id="iosGirisVideo" autoplay muted playsinline webkit-playsinline loop preload="auto">
+                <source src="https://res.cloudinary.com/sovenzsp/video/upload/ac_none,vc_h264,q_auto/v1786482075/giris.mp4" type="video/mp4">
             </video>
             <div class="kapak-yazi-katmani">
                 <h1>Gül & Ümit</h1>
                 <p>Nişan Davetiyemize Hoş Geldiniz...</p>
             </div>
         </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("Davetiyeyi Aç 💌", use_container_width=True, type="primary"):
-            st.session_state.kapak_acik = False
-            st.rerun()
-else:
-    # Ana Davetiye Başlangıcı ve Görsel Müzik Çalar
-    st.markdown("<h4 style='text-align:center; color:#6b1d2f;'>🎵 Nişan Müziğimiz</h4>", unsafe_allow_html=True)
-    st.audio("https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/dugun_muzigi.mp3", format="audio/mpeg", autoplay=True, loop=True)
-    st.markdown("---")
-    # ---------------------------------------------------------
-    # 1. KARİKATÜR GÖRSELİ (DOĞRUDAN GITHUB RAW LINK & SAF HTML)
-    # ---------------------------------------------------------
-    st.markdown('<div style="text-align: center; width: 100%; margin: 10px 0;"><img src="https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/karikatur_yeni.png" style="width: 180px; height: auto; display: inline-block;" onerror="this.onerror=null; this.src=\'karikatur_yeni.png\';"></div>', unsafe_allow_html=True)
-
-    # ---------------------------------------------------------
-    # BAŞLIK VE ALT YAZI (TAM ORTALANMIŞ)
-    # ---------------------------------------------------------
-    st.markdown("<h1 class='couple-title' style='text-align: center;'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
-    st.markdown("<p class='subtitle' style='text-align: center;'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
-
-    # ---------------------------------------------------------
-    # 2. YÜZÜK GÖRSELİ (DOĞRUDAN GITHUB RAW LINK & SAF HTML YUVARLAK ROZET)
-    # ---------------------------------------------------------
-    st.markdown('<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/n%C4%B1san_yuzuk.png" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 3px solid #D4AF37; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: inline-block;" onerror="this.onerror=null; this.src=\'nısan_yuzuk.png\';"></div>', unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class='card' style='text-align: center;'>
-        <p style='font-size: 1.1rem; line-height: 1.7; color: #4a3e35;'>
-            <i>"Birbirimizin hayatına dokunduğumuz andan itibaren başlayan hikayemizi,<br>
-            nişan törenimizle yeni bir sayfaya taşıyoruz. Yanımızda olmanız dileğiyle..."</i>
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ---------------------------------------------------------
-    # GERİ SAYIM SAYACI (CANLI JAVASCRIPT COUNTDOWN)
-    # ---------------------------------------------------------
-    st.markdown("<h3 class='notranslate' translate='no' style='text-align: center; font-family: Playfair Display, serif; color: #5a4b41; margin-bottom: 5px;'>Büyük Güne Kalan Zaman</h3>", unsafe_allow_html=True)
-
-    components.html("""
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap');
-
-        body {
-            margin: 0;
-            padding: 0;
-            background: transparent;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .countdown-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            padding: 5px 0;
-            flex-wrap: wrap;
-        }
-
-        .countdown-box {
-            background: linear-gradient(145deg, #ffffff, #f7f1e5);
-            border: 1px solid #d4af37;
-            border-radius: 12px;
-            padding: 10px 14px;
-            text-align: center;
-            min-width: 65px;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
-            box-sizing: border-box;
-        }
-
-        .countdown-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: #b8860b;
-            line-height: 1.1;
-        }
-
-        .countdown-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: #7a6a5d;
-            margin-top: 2px;
-        }
-
-        /* Mobil Ekranlar İçin Otomatik Uyumlu (Responsive) @media Kuralları */
-        @media (max-width: 480px) {
-            .countdown-container {
-                gap: 6px;
-            }
-            .countdown-box {
-                padding: 8px 10px;
-                min-width: 55px;
-                border-radius: 10px;
-            }
-            .countdown-number {
-                font-size: 1.3rem;
-            }
-            .countdown-label {
-                font-size: 0.62rem;
-                letter-spacing: 0.5px;
-            }
-        }
-
-        @media (max-width: 340px) {
-            .countdown-container {
-                gap: 4px;
-            }
-            .countdown-box {
-                padding: 6px 8px;
-                min-width: 48px;
-            }
-            .countdown-number {
-                font-size: 1.1rem;
-            }
-            .countdown-label {
-                font-size: 0.58rem;
-            }
-        }
-    </style>
-
-    <div class='countdown-container' id='timer-wrap'>
-        <div class='countdown-box'>
-            <div class='countdown-number' id='cd-days'>0</div>
-            <div class='countdown-label notranslate' translate='no'>GÜN</div>
-        </div>
-        <div class='countdown-box'>
-            <div class='countdown-number' id='cd-hours'>00</div>
-            <div class='countdown-label notranslate' translate='no'>SAAT</div>
-        </div>
-        <div class='countdown-box'>
-            <div class='countdown-number' id='cd-minutes'>00</div>
-            <div class='countdown-label notranslate' translate='no'>DAKİKA</div>
-        </div>
-        <div class='countdown-box'>
-            <div class='countdown-number' id='cd-seconds'>00</div>
-            <div class='countdown-label notranslate' translate='no'>SANİYE</div>
-        </div>
+        <button id="davetiyeAcBtn" class="ozel-ac-butonu">Davetiyeyi Aç 💌</button>
     </div>
 
     <script>
-        var targetDate = new Date('2026-08-20T20:00:00').getTime();
-
-        function updateTimer() {
-            var now = new Date().getTime();
-            var diff = targetDate - now;
-
-            if (diff <= 0) {
-                var wrap = document.getElementById('timer-wrap');
-                if (wrap) {
-                    wrap.innerHTML = "<div style='text-align:center; font-weight:bold; color:#b8860b; font-size: 1.2rem;'>Bugün En Özel Günümüz! 🎉</div>";
-                }
-                return;
+    (function() {
+        var interval = setInterval(function() {
+            var v = document.getElementById('iosGirisVideo');
+            var btn = document.getElementById('davetiyeAcBtn');
+            if (v) {
+                v.muted = true;
+                v.defaultMuted = true;
+                v.play().catch(function(e){ console.log(e); });
             }
+            if (btn) {
+                btn.onclick = function() {
+                    var ses = document.getElementById('nisanMuzigi');
+                    if (ses) { ses.play().catch(function(e){ console.log(e); }); }
+                    var overlay = document.getElementById('kapakOverlay');
+                    if (overlay) { overlay.style.display = 'none'; }
+                };
+                clearInterval(interval);
+            }
+        }, 100);
+    })();
+    </script>
+""", unsafe_allow_html=True)
 
-            var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+# ---------------------------------------------------------
+# 1. KARİKATÜR GÖRSELİ (DOĞRUDAN GITHUB RAW LINK & SAF HTML)
+# ---------------------------------------------------------
+st.markdown('<div style="text-align: center; width: 100%; margin: 10px 0;"><img src="https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/karikatur_yeni.png" style="width: 180px; height: auto; display: inline-block;" onerror="this.onerror=null; this.src=\'karikatur_yeni.png\';"></div>', unsafe_allow_html=True)
 
-            var dEl = document.getElementById('cd-days');
-            var hEl = document.getElementById('cd-hours');
-            var mEl = document.getElementById('cd-minutes');
-            var sEl = document.getElementById('cd-seconds');
+# ---------------------------------------------------------
+# BAŞLIK VE ALT YAZI (TAM ORTALANMIŞ)
+# ---------------------------------------------------------
+st.markdown("<h1 class='couple-title' style='text-align: center;'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
+st.markdown("<p class='subtitle' style='text-align: center;'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
 
-            if (dEl) dEl.innerText = days;
-            if (hEl) hEl.innerText = hours < 10 ? '0' + hours : hours;
-            if (mEl) mEl.innerText = minutes < 10 ? '0' + minutes : minutes;
-            if (sEl) sEl.innerText = seconds < 10 ? '0' + seconds : seconds;
+# ---------------------------------------------------------
+# 2. YÜZÜK GÖRSELİ (DOĞRUDAN GITHUB RAW LINK & SAF HTML YUVARLAK ROZET)
+# ---------------------------------------------------------
+st.markdown('<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/n%C4%B1san_yuzuk.png" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 3px solid #D4AF37; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: inline-block;" onerror="this.onerror=null; this.src=\'nısan_yuzuk.png\';"></div>', unsafe_allow_html=True)
+
+st.markdown("""
+<div class='card' style='text-align: center;'>
+    <p style='font-size: 1.1rem; line-height: 1.7; color: #4a3e35;'>
+        <i>"Birbirimizin hayatına dokunduğumuz andan itibaren başlayan hikayemizi,<br>
+        nişan törenimizle yeni bir sayfaya taşıyoruz. Yanımızda olmanız dileğiyle..."</i>
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# ---------------------------------------------------------
+# GERİ SAYIM SAYACI (CANLI JAVASCRIPT COUNTDOWN)
+# ---------------------------------------------------------
+st.markdown("<h3 class='notranslate' translate='no' style='text-align: center; font-family: Playfair Display, serif; color: #5a4b41; margin-bottom: 5px;'>Büyük Güne Kalan Zaman</h3>", unsafe_allow_html=True)
+
+components.html("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap');
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .countdown-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        padding: 5px 0;
+        flex-wrap: wrap;
+    }
+
+    .countdown-box {
+        background: linear-gradient(145deg, #ffffff, #f7f1e5);
+        border: 1px solid #d4af37;
+        border-radius: 12px;
+        padding: 10px 14px;
+        text-align: center;
+        min-width: 65px;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+        box-sizing: border-box;
+    }
+
+    .countdown-number {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: #b8860b;
+        line-height: 1.1;
+    }
+
+    .countdown-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #7a6a5d;
+        margin-top: 2px;
+    }
+
+    /* Mobil Ekranlar İçin Otomatik Uyumlu (Responsive) @media Kuralları */
+    @media (max-width: 480px) {
+        .countdown-container {
+            gap: 6px;
+        }
+        .countdown-box {
+            padding: 8px 10px;
+            min-width: 55px;
+            border-radius: 10px;
+        }
+        .countdown-number {
+            font-size: 1.3rem;
+        }
+        .countdown-label {
+            font-size: 0.62rem;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    @media (max-width: 340px) {
+        .countdown-container {
+            gap: 4px;
+        }
+        .countdown-box {
+            padding: 6px 8px;
+            min-width: 48px;
+        }
+        .countdown-number {
+            font-size: 1.1rem;
+        }
+        .countdown-label {
+            font-size: 0.58rem;
+        }
+    }
+</style>
+
+<div class='countdown-container' id='timer-wrap'>
+    <div class='countdown-box'>
+        <div class='countdown-number' id='cd-days'>0</div>
+        <div class='countdown-label notranslate' translate='no'>GÜN</div>
+    </div>
+    <div class='countdown-box'>
+        <div class='countdown-number' id='cd-hours'>00</div>
+        <div class='countdown-label notranslate' translate='no'>SAAT</div>
+    </div>
+    <div class='countdown-box'>
+        <div class='countdown-number' id='cd-minutes'>00</div>
+        <div class='countdown-label notranslate' translate='no'>DAKİKA</div>
+    </div>
+    <div class='countdown-box'>
+        <div class='countdown-number' id='cd-seconds'>00</div>
+        <div class='countdown-label notranslate' translate='no'>SANİYE</div>
+    </div>
+</div>
+
+<script>
+    var targetDate = new Date('2026-08-20T20:00:00').getTime();
+
+    function updateTimer() {
+        var now = new Date().getTime();
+        var diff = targetDate - now;
+
+        if (diff <= 0) {
+            var wrap = document.getElementById('timer-wrap');
+            if (wrap) {
+                wrap.innerHTML = "<div style='text-align:center; font-weight:bold; color:#b8860b; font-size: 1.2rem;'>Bugün En Özel Günümüz! 🎉</div>";
+            }
+            return;
         }
 
-        updateTimer();
-        setInterval(updateTimer, 1000);
-    </script>
-    """, height=110)
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    # ---------------------------------------------------------
-    # DÜĞÜN PROGRAMI VE MEKAN BİLGİLERİ
-    # ---------------------------------------------------------
-    st.markdown("<hr style='border: 0; height: 1px; background: #e0d5c1; margin: 30px 0;'>", unsafe_allow_html=True)
+        var dEl = document.getElementById('cd-days');
+        var hEl = document.getElementById('cd-hours');
+        var mEl = document.getElementById('cd-minutes');
+        var sEl = document.getElementById('cd-seconds');
 
-    col1, col2 = st.columns(2)
+        if (dEl) dEl.innerText = days;
+        if (hEl) hEl.innerText = hours < 10 ? '0' + hours : hours;
+        if (mEl) mEl.innerText = minutes < 10 ? '0' + minutes : minutes;
+        if (sEl) sEl.innerText = seconds < 10 ? '0' + seconds : seconds;
+    }
 
-    with col1:
-        st.markdown("<h3 style='font-family: Playfair Display; color: #5a4b41;'>📅 Tarih & Saat</h3>", unsafe_allow_html=True)
-        st.markdown("""
-        <div class='card'>
-            <p style='font-size: 1.1rem; font-weight: 600; color: #b8860b;'>Nişan Töreni</p>
-            <p style='font-size: 1rem; color: #333; margin-bottom: 8px;'><b>Tarih:</b> 20 Ağustos 2026, Perşembe</p>
-            <p style='font-size: 1rem; color: #333; margin-bottom: 0;'><b>Saat:</b> 20:00</p>
-        </div>
-        """, unsafe_allow_html=True)
+    updateTimer();
+    setInterval(updateTimer, 1000);
+</script>
+""", height=110)
 
-    with col2:
-        st.markdown("<h3 style='font-family: Playfair Display; color: #5a4b41;'>📍 Mekan & Konum</h3>", unsafe_allow_html=True)
-        st.markdown("""
-        <div class='card'>
-            <p style='font-size: 1.1rem; font-weight: 600; color: #b8860b;'>Nazar Düğün Salonu</p>
-            <p style='font-size: 0.95rem; color: #555;'>
-                Sarıcalı Mah. Yunus Emre Cad. No:186<br>
-                Çarşamba
-            </p>
-            <p style='font-size: 0.85rem; color: #777;'>Otopark Mevcuttur.</p>
-        </div>
-        """, unsafe_allow_html=True)
+# ---------------------------------------------------------
+# DÜĞÜN PROGRAMI VE MEKAN BİLGİLERİ
+# ---------------------------------------------------------
+st.markdown("<hr style='border: 0; height: 1px; background: #e0d5c1; margin: 30px 0;'>", unsafe_allow_html=True)
 
-        maps_url = "https://maps.google.com/?q=Nazar+D%C3%BC%C4%9F%C3%BCn+Salonu+Sar%C4%B1cal%C4%B1+Mahallesi+Yunus+Emre+Caddesi+No:186"
-        st.markdown(f"""
-        <a href='{maps_url}' target='_blank' style='text-decoration: none;'>
-            <button style='
-                background: linear-gradient(135deg, #1B3B2B 0%, #2D5A42 100%);
-                color: white; border: none; border-radius: 25px; padding: 10px 20px;
-                font-weight: 600; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(27,59,43,0.3);'>
-                🗺️ Google Maps'te Aç
-            </button>
-        </a>
-        """, unsafe_allow_html=True)
+col1, col2 = st.columns(2)
 
-    # ---------------------------------------------------------
-    # LCV / KATILIM DURUMU BİLDİRİM FORMU
-    # ---------------------------------------------------------
-    st.markdown("<hr style='border: 0; height: 1px; background: #e0d5c1; margin: 30px 0;'>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align: center; font-family: Playfair Display; color: #5a4b41;'>💌 Katılım Durumu (LCV)</h3>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-size: 0.9rem; color: #777;'>Lütfen 15 Ağustos 2026 tarihine kadar katılım durumunuzu bildiriniz.</p>", unsafe_allow_html=True)
+with col1:
+    st.markdown("<h3 style='font-family: Playfair Display; color: #5a4b41;'>📅 Tarih & Saat</h3>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class='card'>
+        <p style='font-size: 1.1rem; font-weight: 600; color: #b8860b;'>Nişan Töreni</p>
+        <p style='font-size: 1rem; color: #333; margin-bottom: 8px;'><b>Tarih:</b> 20 Ağustos 2026, Perşembe</p>
+        <p style='font-size: 1rem; color: #333; margin-bottom: 0;'><b>Saat:</b> 20:00</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    with st.form("lcv_form", clear_on_submit=True):
-        col_name, col_status = st.columns(2)
-        with col_name:
-            guest_name = st.text_input("Adınız ve Soyadınız *")
-        with col_status:
-            attendance = st.selectbox("Katılım Durumu *", ["Büyük bir mutlulukla geleceğim 🎉", "Maalesef katılamayacağım 😔"])
+with col2:
+    st.markdown("<h3 style='font-family: Playfair Display; color: #5a4b41;'>📍 Mekan & Konum</h3>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class='card'>
+        <p style='font-size: 1.1rem; font-weight: 600; color: #b8860b;'>Nazar Düğün Salonu</p>
+        <p style='font-size: 0.95rem; color: #555;'>
+            Sarıcalı Mah. Yunus Emre Cad. No:186<br>
+            Çarşamba
+        </p>
+        <p style='font-size: 0.85rem; color: #777;'>Otopark Mevcuttur.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-        col_count, col_note = st.columns([1, 2])
-        with col_count:
-            guest_count = st.number_input("Gelecek Kişi Sayısı", min_value=1, max_value=6, value=1)
-        with col_note:
-            note = st.text_input("Özel Not / Mesaj (Varsa)")
+    maps_url = "https://maps.google.com/?q=Nazar+D%C3%BC%C4%9F%C3%BCn+Salonu+Sar%C4%B1cal%C4%B1+Mahallesi+Yunus+Emre+Caddesi+No:186"
+    st.markdown(f"""
+    <a href='{maps_url}' target='_blank' style='text-decoration: none;'>
+        <button style='
+            background: linear-gradient(135deg, #1B3B2B 0%, #2D5A42 100%);
+            color: white; border: none; border-radius: 25px; padding: 10px 20px;
+            font-weight: 600; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(27,59,43,0.3);'>
+            🗺️ Google Maps'te Aç
+        </button>
+    </a>
+    """, unsafe_allow_html=True)
 
-        submit_lcv = st.form_submit_button("Katılım Bilgisini Gönder ✨")
+# ---------------------------------------------------------
+# LCV / KATILIM DURUMU BİLDİRİM FORMU
+# ---------------------------------------------------------
+st.markdown("<hr style='border: 0; height: 1px; background: #e0d5c1; margin: 30px 0;'>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; font-family: Playfair Display; color: #5a4b41;'>💌 Katılım Durumu (LCV)</h3>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 0.9rem; color: #777;'>Lütfen 15 Ağustos 2026 tarihine kadar katılım durumunuzu bildiriniz.</p>", unsafe_allow_html=True)
 
-        if submit_lcv:
-            if guest_name.strip() == "":
-                st.error("Lütfen adınızı ve soyadınızı giriniz.")
-            else:
-                now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                new_data = pd.DataFrame([{
-                    "Tarih": now_str,
-                    "Ad Soyad": guest_name,
-                    "Katılım Durumu": attendance,
-                    "Kişi Sayısı": guest_count if "geleceğim" in attendance else 0,
-                    "Not": note
-                }])
-                new_data.to_csv(LCV_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
-                st.success("Katılım bilginiz kaydoldu. Teşekkür ederiz!")
+with st.form("lcv_form", clear_on_submit=True):
+    col_name, col_status = st.columns(2)
+    with col_name:
+        guest_name = st.text_input("Adınız ve Soyadınız *")
+    with col_status:
+        attendance = st.selectbox("Katılım Durumu *", ["Büyük bir mutlulukla geleceğim 🎉", "Maalesef katılamayacağım 😔"])
 
-    # ---------------------------------------------------------
-    # DİLEK & TEBRİK ALANI VE FORMU
-    # ---------------------------------------------------------
-    st.markdown("---")
-    st.markdown("<h3 style='text-align: center; color: #6b1d2f;'>💌 Dilek ve Tebrikleriniz</h3>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #555;'>Gül & Ümit çiftine iletmek istediğiniz güzel dileklerinizi yazabilirsiniz.</p>", unsafe_allow_html=True)
+    col_count, col_note = st.columns([1, 2])
+    with col_count:
+        guest_count = st.number_input("Gelecek Kişi Sayısı", min_value=1, max_value=6, value=1)
+    with col_note:
+        note = st.text_input("Özel Not / Mesaj (Varsa)")
 
-    with st.form("dilek_formu", clear_on_submit=True):
-        ad_soyad = st.text_input("Adınız Soyadınız")
-        mesaj = st.text_area("Mesajınız / Notunuz", placeholder="Çiftimize mutluluklar dileriz...")
-        gonder_btn = st.form_submit_button("Dileğinizi İletin ✨", use_container_width=True)
+    submit_lcv = st.form_submit_button("Katılım Bilgisini Gönder ✨")
 
-        if gonder_btn:
-            if ad_soyad.strip() and mesaj.strip():
-                now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                new_msg = pd.DataFrame([{
-                    "Tarih": now_str,
-                    "Gönderen": ad_soyad,
-                    "Mesaj": mesaj
-                }])
-                new_msg.to_csv(MSG_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
-                st.success("Güzel dilekleriniz çiftimize başarıyla iletildi! Teşekkür ederiz. ❤️")
-            else:
-                st.error("Lütfen adınızı ve mesajınızı doldurunuz.")
+    if submit_lcv:
+        if guest_name.strip() == "":
+            st.error("Lütfen adınızı ve soyadınızı giriniz.")
+        else:
+            now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            new_data = pd.DataFrame([{
+                "Tarih": now_str,
+                "Ad Soyad": guest_name,
+                "Katılım Durumu": attendance,
+                "Kişi Sayısı": guest_count if "geleceğim" in attendance else 0,
+                "Not": note
+            }])
+            new_data.to_csv(LCV_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
+            st.success("Katılım bilginiz kaydoldu. Teşekkür ederiz!")
+
+# ---------------------------------------------------------
+# DİLEK & TEBRİK ALANI VE FORMU
+# ---------------------------------------------------------
+st.markdown("---")
+st.markdown("<h3 style='text-align: center; color: #6b1d2f;'>💌 Dilek ve Tebrikleriniz</h3>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #555;'>Gül & Ümit çiftine iletmek istediğiniz güzel dileklerinizi yazabilirsiniz.</p>", unsafe_allow_html=True)
+
+with st.form("dilek_formu", clear_on_submit=True):
+    ad_soyad = st.text_input("Adınız Soyadınız")
+    mesaj = st.text_area("Mesajınız / Notunuz", placeholder="Çiftimize mutluluklar dileriz...")
+    gonder_btn = st.form_submit_button("Dileğinizi İletin ✨", use_container_width=True)
+
+    if gonder_btn:
+        if ad_soyad.strip() and mesaj.strip():
+            now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            new_msg = pd.DataFrame([{
+                "Tarih": now_str,
+                "Gönderen": ad_soyad,
+                "Mesaj": mesaj
+            }])
+            new_msg.to_csv(MSG_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
+            st.success("Güzel dilekleriniz çiftimize başarıyla iletildi! Teşekkür ederiz. ❤️")
+        else:
+            st.error("Lütfen adınızı ve mesajınızı doldurunuz.")
