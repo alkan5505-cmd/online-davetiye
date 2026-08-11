@@ -345,7 +345,7 @@ if st.session_state.kapak_acik:
         </style>
         <div class="kapak-kutu">
             <video autoplay muted playsinline webkit-playsinline loop>
-                <source src="https://res.cloudinary.com/sovenzsp/video/upload/v1786482075/giris.mp4" type="video/mp4">
+                <source src="https://res.cloudinary.com/sovenzsp/video/upload/vc_h264,q_auto/v1786482075/giris.mp4" type="video/mp4">
             </video>
             <div class="kapak-yazi-katmani">
                 <h1>Gül & Ümit</h1>
