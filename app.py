@@ -670,13 +670,13 @@ else:
     st.markdown("---")
     st.markdown("<h4 style='text-align: center; color: #6b1d2f;'>✨ Gelen Güzel Dilekler</h4>", unsafe_allow_html=True)
 
-    # 2. Google E-Tablo'dan Güvenli Veri Çekme Fonksiyonu
+    # 2. Tam Doğru ID İle Google E-Tablo'dan Veri Çekme
     def get_google_sheets_dilekleri():
+        sheet_id = "1tQyFvRunLuiR3oIth9tO52qDpIBybEcCvcsn9aBKwXo"
         gid = "1893750835"
-        sheet_id = "1tQyFvRunLuiR3olth9tO52qDplBybEcVcsn9aBKWXo"
         urls = [
-            f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?gid={gid}&single=true&output=csv&t={int(time.time())}",
-            f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}&t={int(time.time())}"
+            f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}&t={int(time.time())}",
+            f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?gid={gid}&single=true&output=csv&t={int(time.time())}"
         ]
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
         
@@ -684,8 +684,7 @@ else:
         for url in urls:
             try:
                 res = requests.get(url, headers=headers, timeout=5)
-                # Yanıt HTML değilse ve 200 ise işleyelim
-                if res.status_code == 200 and not res.text.strip().startswith("<"):
+                if res.status_code == 200 and not res.text.strip().startswith("<") and "Zaman damgası" in res.text:
                     df = pd.read_csv(io.StringIO(res.text))
                     if not df.empty:
                         for _, row in df.iloc[::-1].iterrows():
