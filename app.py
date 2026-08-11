@@ -56,6 +56,18 @@ def get_video_base64():
                 continue
     return None
 
+def get_audio_base64(file_name="dugun_muzigi.mp3"):
+    try:
+        if os.path.exists(file_name):
+            with open(file_name, "rb") as f:
+                return base64.b64encode(f.read()).decode()
+        elif os.path.exists(r"C:\Users\Ümit\Downloads\dugun_muzigi.mp3.mp3"):
+            with open(r"C:\Users\Ümit\Downloads\dugun_muzigi.mp3.mp3", "rb") as f:
+                return base64.b64encode(f.read()).decode()
+    except:
+        return ""
+    return ""
+
 # GitHub kullanıcı adınızı buraya tanımlayabilirsiniz (Örn: "umit")
 GITHUB_KULLANICI_ADI = "KULLANICI_ADINIZ"
 muzik_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/dugun_muzigi.mp3"
