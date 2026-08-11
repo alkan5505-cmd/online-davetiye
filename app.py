@@ -6,6 +6,7 @@ from datetime import datetime
 import os
 import base64
 import re
+import time
 
 # ---------------------------------------------------------
 # Sayfa Yapılandırması (Page Config)
@@ -645,9 +646,14 @@ else:
                         "entry.7361262": ad_soyad,
                         "entry.570319252": mesaj
                     }
-                    res = requests.post(FORM_RESPONSE_URL, data=payload)
+                    # Bot korumasını geçen gerçek tarayıcı kimliği
+                    headers = {
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                    }
+                    res = requests.post(FORM_RESPONSE_URL, data=payload, headers=headers)
                     if res.status_code == 200:
                         st.success("Güzel dileğiniz iletildi, teşekkür ederiz! ❤️")
+                        time.sleep(1)
                         st.rerun()
                     else:
                         st.error("Gönderilirken bir sorun oluştu, lütfen tekrar deneyin.")
@@ -659,8 +665,8 @@ else:
     st.markdown("---")
     st.markdown("<h4 style='text-align: center; color: #6b1d2f;'>✨ Gelen Güzel Dilekler</h4>", unsafe_allow_html=True)
 
-    # Google E-Tablo'dan Canlı Okuma (Veriler asla silinmez)
-    sheet_csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?output=csv"
+    # Önbellek engelleyici zaman damgası eklenmiş canlı CSV okuma
+    sheet_csv_url = f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?output=csv&t={int(time.time())}"
 
     try:
         df = pd.read_csv(sheet_csv_url)
@@ -668,7 +674,7 @@ else:
             for index, row in df.iloc[::-1].iterrows():
                 ad = row.iloc[1] if len(row) > 1 and pd.notna(row.iloc[1]) else "Anonim"
                 not_metni = row.iloc[2] if len(row) > 2 and pd.notna(row.iloc[2]) else ""
-                if not_metni:
+                if not_metni and str(not_metni).strip():
                     st.markdown(f"""
                         <div style="background-color: #fcf8f2; border-left: 4px solid #6b1d2f; padding: 12px 16px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                             <strong style="color: #6b1d2f; font-size: 15px;">{ad}</strong><br>
