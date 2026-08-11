@@ -622,26 +622,36 @@ else:
                 st.success("Katılım bilginiz kaydoldu. Teşekkür ederiz!")
 
     # ---------------------------------------------------------
-    # DİLEK & TEBRİK ALANI VE FORMU
+    # DİLEK & TEBRİK ALANI VE FORMU (GOOGLE FORMS & E-TABLO ENTEGRASYONU)
     # ---------------------------------------------------------
     st.markdown("---")
     st.markdown("<h3 style='text-align: center; color: #6b1d2f;'>💌 Dilek ve Tebrikleriniz</h3>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #555;'>Gül & Ümit çiftine iletmek istediğiniz güzel dileklerinizi yazabilirsiniz.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center;'>Gül & Ümit çiftine iletmek istediğiniz güzel dileklerinizi yazabilirsiniz.</p>", unsafe_allow_html=True)
 
-    with st.form("dilek_formu", clear_on_submit=True):
-        ad_soyad = st.text_input("Adınız Soyadınız")
-        mesaj = st.text_area("Mesajınız / Notunuz", placeholder="Çiftimize mutluluklar dileriz...")
-        gonder_btn = st.form_submit_button("Dileğinizi İletin ✨", use_container_width=True)
+    # 1. Google Form Gönderme Kutusu (İçeride Açar)
+    form_linki = "https://docs.google.com/forms/d/1-146MNO5C-oszfo1rRVL1jk0vFSb9a8lriX0EMI_SSI/viewform?embedded=true"
+    st.markdown(f'<iframe src="{form_linki}" width="100%" height="480" frameborder="0" marginheight="0" marginwidth="0">Yükleniyor…</iframe>', unsafe_allow_html=True)
 
-        if gonder_btn:
-            if ad_soyad.strip() and mesaj.strip():
-                now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                new_msg = pd.DataFrame([{
-                    "Tarih": now_str,
-                    "Gönderen": ad_soyad,
-                    "Mesaj": mesaj
-                }])
-                new_msg.to_csv(MSG_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
-                st.success("Güzel dilekleriniz çiftimize başarıyla iletildi! Teşekkür ederiz. ❤️")
-            else:
-                st.error("Lütfen adınızı ve mesajınızı doldurunuz.")
+    st.markdown("---")
+    st.markdown("<h4 style='text-align: center; color: #6b1d2f;'>✨ Gelen Güzel Dilekler</h4>", unsafe_allow_html=True)
+
+    # 2. Google E-Tablo'dan Mesajları Canlı Okuma (Asla Silinmez)
+    sheet_csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?output=csv"
+
+    try:
+        df = pd.read_csv(sheet_csv_url)
+        if not df.empty:
+            for index, row in df.iloc[::-1].iterrows():
+                ad = row.iloc[1] if len(row) > 1 and pd.notna(row.iloc[1]) else "Anonim"
+                mesaj = row.iloc[2] if len(row) > 2 and pd.notna(row.iloc[2]) else ""
+                if mesaj:
+                    st.markdown(f"""
+                        <div style="background-color: #fcf8f2; border-left: 4px solid #6b1d2f; padding: 12px 16px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <strong style="color: #6b1d2f; font-size: 15px;">{ad}</strong><br>
+                            <span style="color: #444; font-size: 14px;">{mesaj}</span>
+                        </div>
+                    """, unsafe_allow_html=True)
+        else:
+            st.info("Henüz dilek yazılmamış. İlk dileği siz yazın! 💫")
+    except Exception as e:
+        st.info("Dilekler yükleniyor... Henüz mesaj yazılmamış olabilir.")
