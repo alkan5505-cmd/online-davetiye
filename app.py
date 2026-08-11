@@ -298,12 +298,16 @@ st.markdown("""
 # ---------------------------------------------------------
 st.markdown(f"""
 <div id="kapakEkrani" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#fdfbf7; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; box-sizing:border-box;">
-    <h1 style="font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: #6b1d2f; margin: 0 0 10px 0; text-shadow: 1px 1px 4px rgba(212,175,55,0.4);"><i>Gül & Ümit</i></h1>
-    <p style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #5a4b41; margin-bottom: 20px;">Nişan Davetiyemize Hoş Geldiniz...</p>
-    <video autoplay muted playsinline loop style="max-width:350px; width:90%; height:auto; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.15);">
-        <source src="{video_url}" type="video/mp4">
-        <source src="giris.mp4" type="video/mp4">
-    </video>
+    <div style="position:relative; max-width:350px; width:90%; border-radius:15px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.2);">
+        <video autoplay muted playsinline loop style="width:100%; height:auto; display:block;">
+            <source src="{video_url}" type="video/mp4">
+            <source src="giris.mp4" type="video/mp4">
+        </video>
+        <div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); color:white; padding:15px; box-sizing:border-box; text-shadow:0 2px 6px rgba(0,0,0,0.8);">
+            <h1 style="font-family: 'Great Vibes', cursive; font-size:36px; margin:0 0 10px 0; color:#F5E6C8; font-weight:normal; letter-spacing:1px;"><i>Gül&Ümit</i></h1>
+            <p style="font-family: 'Playfair Display', serif; font-size:16px; margin:0; font-weight:300; color:#ffffff;">Nişan Davetiyemize Hoş Geldiniz...</p>
+        </div>
+    </div>
     <button onclick="document.getElementById('kapakEkrani').style.display='none'" style="margin-top:25px; padding:14px 35px; background:#6b1d2f; color:white; border:2px solid #D4AF37; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.15);">Davetiyeyi Aç 💌</button>
 </div>
 """, unsafe_allow_html=True)
