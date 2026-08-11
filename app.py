@@ -311,6 +311,7 @@ st.markdown("""
 # ---------------------------------------------------------
 # SAF HTML / JS SADE KAPAK EKRANI (BASE64 VİDEO GÖMÜLÜ - IPHONE UYUMLU)
 # ---------------------------------------------------------
+cloudinary_video_url = "https://res.cloudinary.com/sovenzsp/video/upload/v1786482075/giris.mp4"
 github_release_video_url = "https://github.com/alkan5505-cmd/online-davetiye/releases/download/v1.0/giris.mp4"
 video_source = f'data:video/mp4;base64,{giris_v_b64}' if giris_v_b64 else video_url
 
@@ -318,8 +319,8 @@ st.markdown(f"""
 <div id="kapakEkrani" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#fdfbf7; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; box-sizing:border-box;">
     <div style="position:relative; max-width:350px; width:90%; border-radius:15px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.2);">
         <video id="girisVideo" autoplay muted playsinline webkit-playsinline loop disablepictureinpicture style="width:100%; height:auto; display:block;">
+            <source src="{cloudinary_video_url}" type="video/mp4">
             <source src="{github_release_video_url}" type="video/mp4">
-            <source src="{video_url}" type="video/mp4">
             <source src="{video_source}" type="video/mp4">
         </video>
         <div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); color:white; padding:15px; box-sizing:border-box; text-shadow:0 2px 6px rgba(0,0,0,0.8);">
