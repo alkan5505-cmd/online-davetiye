@@ -399,7 +399,7 @@ else:
     </div>
 
     <script>
-        var targetDate = new Date('2026-08-20T19:30:00').getTime();
+        var targetDate = new Date('2026-08-20T20:00:00').getTime();
 
         function updateTimer() {
             var now = new Date().getTime();
@@ -447,7 +447,7 @@ else:
         <div class='card'>
             <p style='font-size: 1.1rem; font-weight: 600; color: #b8860b;'>Nişan Töreni</p>
             <p style='font-size: 1rem; color: #333; margin-bottom: 8px;'><b>Tarih:</b> 20 Ağustos 2026, Perşembe</p>
-            <p style='font-size: 1rem; color: #333; margin-bottom: 0;'><b>Saat:</b> 19:30</p>
+            <p style='font-size: 1rem; color: #333; margin-bottom: 0;'><b>Saat:</b> 20:00</p>
         </div>
         """, unsafe_allow_html=True)
 
