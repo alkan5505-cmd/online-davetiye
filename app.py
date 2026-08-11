@@ -315,22 +315,11 @@ st.markdown("""
 # KAPAK GÖSTERİM ALANI (SESSION STATE KONTROLLÜ)
 # ---------------------------------------------------------
 if st.session_state.kapak_acik:
-    components.html("""
-        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:10px;">
-            <div style="position:relative; max-width:350px; width:100%; border-radius:15px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.2);">
-                <video autoplay muted playsinline loop style="width:100%; height:auto; display:block;">
-                    <source src="https://res.cloudinary.com/sovenzsp/video/upload/v1786482075/giris.mp4" type="video/mp4">
-                </video>
-                <div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); color:white; padding:15px; box-sizing:border-box;">
-                    <h1 style="font-size:36px; margin:0 0 10px 0; color:#F5E6C8; font-weight:normal;">Gül&Ümit</h1>
-                    <p style="font-size:16px; margin:0; font-weight:300; color:#ffffff;">Nişan Davetiyemize Hoş Geldiniz...</p>
-                </div>
-            </div>
-        </div>
-    """, height=500)
-
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
+        st.markdown("<h2 style='text-align: center; color: #6b1d2f;'>Gül & Ümit</h2>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
+        st.video("https://res.cloudinary.com/sovenzsp/video/upload/v1786482075/giris.mp4", autoplay=True, loop=True, muted=True)
         if st.button("Davetiyeyi Aç 💌", use_container_width=True, type="primary"):
             st.session_state.kapak_acik = False
             st.rerun()
