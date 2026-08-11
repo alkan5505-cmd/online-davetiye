@@ -38,9 +38,9 @@ GITHUB_KULLANICI_ADI = "alkan5505-cmd"
 video_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/giris.mp4"
 muzik_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/dugun_muzigi.mp3"
 
-def resim_b64_al(yol):
-    if os.path.exists(yol):
-        with open(yol, "rb") as f:
+def resim_b64_oku(dosya_yolu):
+    if os.path.exists(dosya_yolu):
+        with open(dosya_yolu, "rb") as f:
             return base64.b64encode(f.read()).decode()
     return ""
 
@@ -340,10 +340,11 @@ else:
         st.markdown(f'<audio id="bg-audio" autoplay loop style="display:none;"><source src="{muzik_url}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 1. KARİKATÜR GÖRSELİ (GLOBAL CSS İLE MİLİMETRİK ORTALANMIŞ)
+    # 1. KARİKATÜR GÖRSELİ (B64 DATA URI & HTML ORTALANMIŞ)
     # ---------------------------------------------------------
-    if os.path.exists("karikatur_yeni.png"):
-        st.image("karikatur_yeni.png", width=180)
+    karikatur_b64 = resim_b64_oku("karikatur_yeni.png")
+    if karikatur_b64:
+        st.markdown(f'<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="data:image/png;base64,{karikatur_b64}" style="width: 180px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
     # BAŞLIK VE ALT YAZI (TAM ORTALANMIŞ)
@@ -352,21 +353,12 @@ else:
     st.markdown("<p class='subtitle' style='text-align: center;'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 2. YÜZÜK GÖRSELİ (DİNAMİK DOSYA ARAMA & DOĞRUDAN ST.IMAGE İLE ORTALANMIŞ)
+    # 2. YÜZÜK GÖRSELİ (B64 DATA URI & HTML ORTALANMIŞ)
     # ---------------------------------------------------------
-    yuzuk_dosyasi = None
-    try:
-        for f in os.listdir("."):
-            if ("yuzuk" in f.lower() or "yüzük" in f.lower()) and f.lower().endswith(('.png', '.jpg', '.jpeg')):
-                yuzuk_dosyasi = f
-                break
-    except Exception:
-        pass
-    if not yuzuk_dosyasi and os.path.exists("engagement_rings_ribbon.png"):
-        yuzuk_dosyasi = "engagement_rings_ribbon.png"
-
-    if yuzuk_dosyasi:
-        st.image(yuzuk_dosyasi, width=140)
+    yuzuk_yolu = "nişan_yüzükleri_kurdele.png" if os.path.exists("nişan_yüzükleri_kurdele.png") else "nisan_yuzukleri_kurdele.png"
+    yuzuk_b64 = resim_b64_oku(yuzuk_yolu)
+    if yuzuk_b64:
+        st.markdown(f'<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="data:image/png;base64,{yuzuk_b64}" style="width: 140px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class='card' style='text-align: center;'>
