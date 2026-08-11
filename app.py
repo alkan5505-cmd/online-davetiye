@@ -505,15 +505,16 @@ else:
                 now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
                 new_row = pd.DataFrame([{
                     "Tarih": now_str,
-                    "Ad Soyad": guest_name,
+                    "Ad Soyad": guest_name.strip(),
                     "Katılım Durumu": attendance,
-                    "Kişi Sayısı": guest_count if "geleceğim" in attendance else 0,
-                    "Not": note
+                    "Kişi Sayısı": int(guest_count) if "geleceğim" in attendance else 0,
+                    "Not": note.strip()
                 }])
                 new_row.to_csv(LCV_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
                 
                 st.balloons()
-                st.success("Katılım bilginiz Gül&Ümit çiftine iletildi. Teşekkür ederiz! ❤️")
+                st.success("Katılım bilginiz Gül&Ümit çiftine başarıyla kaydedildi. Teşekkür ederiz! ❤️")
+                st.rerun()
 
     # ---------------------------------------------------------
     # TEBRİK MESAJLARI & ANI DEFTERİ
@@ -533,30 +534,38 @@ else:
                 now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
                 new_msg = pd.DataFrame([{
                     "Tarih": now_str,
-                    "Gönderen": sender_name,
-                    "Mesaj": message_text
+                    "Gönderen": sender_name.strip(),
+                    "Mesaj": message_text.strip()
                 }])
                 new_msg.to_csv(MSG_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
-                st.success("Tebrik mesajınız anı defterine eklendi! ✨")
+                st.success("Tebrik mesajınız anı defterine başarıyla eklendi! ✨")
+                st.rerun()
 
-    # Yayınlanan Mesajları Listeleme
+    # Yayınlanan Mesajları Listeleme (CSV'den Kalıcı Okuma)
     st.markdown("<h4 style='font-family: Playfair Display; color: #5a4b41; margin-top:25px;'>Gelen Dilekler</h4>", unsafe_allow_html=True)
 
     if os.path.exists(MSG_FILE):
-        df_msgs = pd.read_csv(MSG_FILE, encoding="utf-8-sig")
-        if not df_msgs.empty:
-            # Son mesajlar üstte görünsün
-            for idx, row in df_msgs.iloc[::-1].iterrows():
-                st.markdown(f"""
-                <div class='msg-box'>
-                    <div style='display:flex; justify-content:space-between;'>
-                        <span class='msg-author'>✍️ {row['Gönderen']}</span>
-                        <span class='msg-date'>{row['Tarih']}</span>
+        try:
+            df_msgs = pd.read_csv(MSG_FILE, encoding="utf-8-sig")
+            df_msgs = df_msgs.dropna(subset=["Gönderen", "Mesaj"])
+            if not df_msgs.empty:
+                # Son mesajlar üstte görünsün
+                for idx, row in df_msgs.iloc[::-1].iterrows():
+                    gonderen = str(row['Gönderen']).strip()
+                    mesaj = str(row['Mesaj']).strip()
+                    tarih = str(row['Tarih']).strip() if 'Tarih' in row and pd.notna(row['Tarih']) else ""
+                    st.markdown(f"""
+                    <div class='msg-box'>
+                        <div style='display:flex; justify-content:space-between; align-items:center;'>
+                            <span class='msg-author'>✍️ {gonderen}</span>
+                            <span class='msg-date'>{tarih}</span>
+                        </div>
+                        <p style='margin-top: 8px; color: #444; font-size: 0.95rem; line-height: 1.5;'>"{mesaj}"</p>
                     </div>
-                    <p style='margin-top: 8px; color: #444; font-size: 0.95rem;'>"{row['Mesaj']}"</p>
-                </div>
-                """, unsafe_allow_html=True)
-        else:
+                    """, unsafe_allow_html=True)
+            else:
+                st.info("Henüz mesaj yazılmamış. İlk tebrik mesajını yazan siz olun! ✨")
+        except Exception:
             st.info("Henüz mesaj yazılmamış. İlk tebrik mesajını yazan siz olun! ✨")
 
     # ---------------------------------------------------------
