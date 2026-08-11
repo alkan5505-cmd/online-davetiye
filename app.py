@@ -328,7 +328,7 @@ st.markdown(f"""
             <p style="font-family: 'Playfair Display', serif; font-size:16px; margin:0; font-weight:300; color:#ffffff;">Nişan Davetiyemize Hoş Geldiniz...</p>
         </div>
     </div>
-    <button onclick="document.getElementById('kapakEkrani').style.display='none'" style="margin-top:25px; padding:14px 35px; background:#6b1d2f; color:white; border:2px solid #D4AF37; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.15);">Davetiyeyi Aç 💌</button>
+    <button onclick="document.getElementById('kapakEkrani').remove(); window.dispatchEvent(new Event('resize'));" style="margin-top:25px; padding:14px 35px; background:#6b1d2f; color:white; border:2px solid #D4AF37; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.15);">Davetiyeyi Aç 💌</button>
 </div>
 
 <script>
