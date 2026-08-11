@@ -38,6 +38,12 @@ GITHUB_KULLANICI_ADI = "alkan5505-cmd"
 video_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/giris.mp4"
 muzik_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/dugun_muzigi.mp3"
 
+def resim_b64_al(yol):
+    if os.path.exists(yol):
+        with open(yol, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    return ""
+
 audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112674.mp3"
 audio_file = "dugun_muzigi.mp3"
 
@@ -324,12 +330,11 @@ else:
         st.markdown(f'<audio id="bg-audio" autoplay loop style="display:none;"><source src="{muzik_url}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 1. KARİKATÜR GÖRSELİ (st.image width=180, col1, col2, col3)
+    # 1. KARİKATÜR GÖRSELİ (B64 DATA URI & FLEXBOX İLE %100 GARANTİLİ VE ORTALANMIŞ)
     # ---------------------------------------------------------
-    if os.path.exists("karikatur_yeni.png"):
-        col1, col2, col3 = st.columns([1, 1, 1])
-        with col2:
-            st.image("karikatur_yeni.png", width=180)
+    karikatur_b64 = resim_b64_al("karikatur_yeni.png")
+    if karikatur_b64:
+        st.markdown(f'<div style="display:flex;justify-content:center;width:100%;margin:10px 0;"><img src="data:image/png;base64,{karikatur_b64}" style="width:180px;height:auto;"></div>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
     # BAŞLIK VE ALT YAZI (TAM ORTALANMIŞ)
@@ -338,15 +343,12 @@ else:
     st.markdown("<p class='subtitle' style='text-align: center;'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 2. YÜZÜK GÖRSELİ (st.image width=140, col1, col2, col3)
+    # 2. YÜZÜK GÖRSELİ (B64 DATA URI & FLEXBOX İLE %100 GARANTİLİ VE ORTALANMIŞ)
     # ---------------------------------------------------------
-    rings_file = "nisan_yuzukleri_kurdele.png" if os.path.exists("nisan_yuzukleri_kurdele.png") else "engagement_rings_ribbon.png"
-    if os.path.exists(rings_file):
-        col1, col2, col3 = st.columns([1, 1, 1])
-        with col2:
-            st.image(rings_file, width=140)
-    else:
-        st.markdown("<div style='text-align: center; font-size: 3rem;'>💍</div>", unsafe_allow_html=True)
+    yuzuk_yolu = "nişan_yüzükleri_kurdele.png" if os.path.exists("nişan_yüzükleri_kurdele.png") else "nisan_yuzukleri_kurdele.png"
+    yuzuk_b64 = resim_b64_al(yuzuk_yolu)
+    if yuzuk_b64:
+        st.markdown(f'<div style="display:flex;justify-content:center;width:100%;margin:10px 0;"><img src="data:image/png;base64,{yuzuk_b64}" style="width:140px;height:auto;"></div>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class='card' style='text-align: center;'>
