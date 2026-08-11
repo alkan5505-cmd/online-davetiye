@@ -246,10 +246,17 @@ if "opened" not in st.session_state:
 # ---------------------------------------------------------
 if not st.session_state.opened:
     # ---------------------------------------------------------
-    # 2. TEMİZ VE ZARİF KARŞILAMA EKRANI (SADECE BAŞLIK, METİN VE BUTON)
+    # 2. KARŞILAMA EKRANI VE 'giris.mp4' VİDEOSU
     # ---------------------------------------------------------
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown("<div style='text-align: center; font-size: 3.5rem;'>💍</div>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    if os.path.exists("giris.mp4"):
+        st.video("giris.mp4", autoplay=True, loop=True, muted=True)
+    elif os.path.exists(r"C:\Users\Ümit\Downloads\giris.mp4.mp4"):
+        st.video(r"C:\Users\Ümit\Downloads\giris.mp4.mp4", autoplay=True, loop=True, muted=True)
+    else:
+        st.video("giris.mp4", autoplay=True, loop=True, muted=True)
+
     st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
     st.markdown("<p class='subtitle'>Nişan Davetiyemize Hoş Geldiniz...</p>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
