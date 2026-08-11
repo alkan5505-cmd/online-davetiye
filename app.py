@@ -38,11 +38,7 @@ GITHUB_KULLANICI_ADI = "alkan5505-cmd"
 video_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/giris.mp4"
 muzik_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/dugun_muzigi.mp3"
 
-def resim_b64_oku(dosya_yolu):
-    if os.path.exists(dosya_yolu):
-        with open(dosya_yolu, "rb") as f:
-            return base64.b64encode(f.read()).decode()
-    return ""
+
 
 audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112674.mp3"
 audio_file = "dugun_muzigi.mp3"
@@ -340,11 +336,9 @@ else:
         st.markdown(f'<audio id="bg-audio" autoplay loop style="display:none;"><source src="{muzik_url}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 1. KARİKATÜR GÖRSELİ (B64 DATA URI & HTML %100 ORTALANMIŞ)
+    # 1. KARİKATÜR GÖRSELİ (DOĞRUDAN GITHUB RAW LINK & SAF HTML)
     # ---------------------------------------------------------
-    karikatur_b64 = resim_b64_oku("karikatur_yeni.png")
-    if karikatur_b64:
-        st.markdown(f'<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="data:image/png;base64,{karikatur_b64}" style="width: 180px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
+    st.markdown('<div style="text-align: center; width: 100%; margin: 10px 0;"><img src="https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/karikatur_yeni.png" style="width: 180px; height: auto; display: inline-block;" onerror="this.onerror=null; this.src=\'karikatur_yeni.png\';"></div>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
     # BAŞLIK VE ALT YAZI (TAM ORTALANMIŞ)
@@ -353,17 +347,9 @@ else:
     st.markdown("<p class='subtitle' style='text-align: center;'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 2. YÜZÜK GÖRSELİ (B64 DATA URI & HTML %100 ORTALANMIŞ)
+    # 2. YÜZÜK GÖRSELİ (DOĞRUDAN GITHUB RAW LINK & SAF HTML YUVARLAK ROZET)
     # ---------------------------------------------------------
-    yuzuk_yolu = ""
-    for isim in ["nısan_yuzuk.png", "nisan_yuzuk.png", "nisan_yuzukleri.png", "nisan_yuzukleri_kurdele.png", "nişan_yüzükleri_kurdele.png"]:
-        if os.path.exists(isim):
-            yuzuk_yolu = isim
-            break
-
-    yuzuk_b64 = resim_b64_oku(yuzuk_yolu)
-    if yuzuk_b64:
-        st.markdown(f'<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="data:image/png;base64,{yuzuk_b64}" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 3px solid #D4AF37; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: inline-block;"></div>', unsafe_allow_html=True)
+    st.markdown('<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/n%C4%B1san_yuzuk.png" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 3px solid #D4AF37; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: inline-block;" onerror="this.onerror=null; this.src=\'nısan_yuzuk.png\';"></div>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class='card' style='text-align: center;'>
