@@ -48,6 +48,8 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap');
 
+
+
     /* Streamlit Üst ve Yan Boşlukları Sıfırlama */
     .stAppViewMainBlockContainer, [data-testid="stMainBlockContainer"], .block-container, [data-testid="stHeader"] {
         padding-top: 0rem !important;
@@ -322,20 +324,27 @@ else:
         st.markdown(f'<audio id="bg-audio" autoplay loop style="display:none;"><source src="{muzik_url}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # ÜST BÖLÜM: DOĞAL STİCKER KARİKATÜR GÖRSELİ VE BAŞLIK
+    # 1. KARİKATÜR GÖRSELİ (st.image width=180, col1, col2, col3)
     # ---------------------------------------------------------
     if os.path.exists("karikatur_yeni.png"):
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.image("karikatur_yeni.png", use_container_width=True)
-
-    st.markdown("<h1 class='couple-title'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
-    st.markdown("<p class='subtitle'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
-
-    if os.path.exists("engagement_rings_ribbon.png"):
         col1, col2, col3 = st.columns([1, 1, 1])
         with col2:
-            st.image("engagement_rings_ribbon.png", use_container_width=True)
+            st.image("karikatur_yeni.png", width=180)
+
+    # ---------------------------------------------------------
+    # BAŞLIK VE ALT YAZI (TAM ORTALANMIŞ)
+    # ---------------------------------------------------------
+    st.markdown("<h1 class='couple-title' style='text-align: center;'><i>Gül&Ümit</i></h1>", unsafe_allow_html=True)
+    st.markdown("<p class='subtitle' style='text-align: center;'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
+
+    # ---------------------------------------------------------
+    # 2. YÜZÜK GÖRSELİ (st.image width=140, col1, col2, col3)
+    # ---------------------------------------------------------
+    rings_file = "nisan_yuzukleri_kurdele.png" if os.path.exists("nisan_yuzukleri_kurdele.png") else "engagement_rings_ribbon.png"
+    if os.path.exists(rings_file):
+        col1, col2, col3 = st.columns([1, 1, 1])
+        with col2:
+            st.image(rings_file, width=140)
     else:
         st.markdown("<div style='text-align: center; font-size: 3rem;'>💍</div>", unsafe_allow_html=True)
 
