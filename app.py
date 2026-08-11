@@ -56,21 +56,9 @@ def get_video_base64():
                 continue
     return None
 
-def get_audio_base64():
-    audio_paths = [
-        "dugun_muzigi.mp3",
-        "dugun_muzigi.mp3.mp3",
-        r"C:\Users\Ümit\Downloads\dugun_muzigi.mp3.mp3",
-        r"C:\Users\Ümit\Downloads\dugun_muzigi.mp3"
-    ]
-    for path in audio_paths:
-        if os.path.exists(path) and os.path.getsize(path) > 1000:
-            try:
-                with open(path, "rb") as f:
-                    return base64.b64encode(f.read()).decode('utf-8')
-            except Exception:
-                continue
-    return None
+# GitHub kullanıcı adınızı buraya tanımlayabilirsiniz (Örn: "umit")
+GITHUB_KULLANICI_ADI = "KULLANICI_ADINIZ"
+muzik_url = f"https://raw.githubusercontent.com/{GITHUB_KULLANICI_ADI}/online-davetiye/main/dugun_muzigi.mp3"
 
 audio_url = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-piano-112674.mp3"
 audio_file = "dugun_muzigi.mp3"
