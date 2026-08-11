@@ -319,31 +319,53 @@ if st.session_state.kapak_acik:
     st.markdown("""
         <style>
         .kapak-kapsayici {
-            position: relative; max-width: 380px; margin: 0 auto 20px auto;
-            border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            position: relative;
+            max-width: 340px;
+            margin: 0 auto 15px auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
         }
-        .kapak-video { width: 100%; display: block; }
-        .kapak-yazi-katmani {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: rgba(0, 0, 0, 0.35); color: white; text-align: center;
+        .kapak-video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 16px;
+            pointer-events: none;
         }
-        .kapak-yazi-katmani h1 {
+        /* iPhone Safari Oynat Simgesini Gizleme Kuralları */
+        video::-webkit-media-controls-start-playback-button,
+        video::-webkit-media-controls {
+            display: none !important;
+            -webkit-appearance: none !important;
+        }
+        .kapak-yazi {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.35);
+            color: white; text-align: center;
+            padding: 15px; box-sizing: border-box;
+            pointer-events: none;
+        }
+        .kapak-yazi h1 {
             font-family: 'Great Vibes', cursive;
-            font-size: 38px !important; margin: 0 0 8px 0 !important;
-            color: #F5E6C8 !important; font-weight: normal !important; text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+            font-size: 34px !important; margin: 0 0 8px 0 !important;
+            color: #F5E6C8 !important; font-weight: normal !important;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
         }
-        .kapak-yazi-katmani p {
+        .kapak-yazi p {
             font-family: 'Playfair Display', serif;
-            font-size: 16px !important; margin: 0 !important;
+            font-size: 15px !important; margin: 0 !important;
             color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
         </style>
         <div class="kapak-kapsayici">
-            <video autoplay muted playsinline loop class="kapak-video">
+            <video autoplay muted playsinline webkit-playsinline loop class="kapak-video">
                 <source src="https://res.cloudinary.com/sovenzsp/video/upload/v1786482075/giris.mp4" type="video/mp4">
             </video>
-            <div class="kapak-yazi-katmani">
+            <div class="kapak-yazi">
                 <h1>Gül ve Ümit</h1>
                 <p>Nişan Davetiyemize Hoş Geldiniz...</p>
             </div>
