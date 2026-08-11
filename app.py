@@ -235,6 +235,58 @@ st.markdown("""
         display: none !important;
     }
 
+    /* Videoyu Kapsayan Div */
+    .video-hero-card {
+        position: relative !important;
+        width: 100% !important;
+        max-width: 440px !important;
+        height: 75vh !important;
+        max-height: 620px !important;
+        min-height: 460px !important;
+        margin: 15px auto 25px auto !important;
+        border-radius: 25px !important;
+        overflow: hidden !important;
+        border: 3px solid #ffffff !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), 0 0 20px rgba(212, 175, 55, 0.35) !important;
+        background: #1a1a1a !important;
+    }
+
+    /* Videonun Alt Kısmında Ortalanmış Buton (position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%)) */
+    .hero-btn-container {
+        position: absolute !important;
+        bottom: 30px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 99 !important;
+        width: 85% !important;
+        max-width: 320px !important;
+    }
+
+    .hero-btn-container div.stButton > button {
+        background: linear-gradient(135deg, #581845 0%, #4a0e2e 50%, #6a1b44 100%) !important;
+        color: #f3e5ab !important;
+        font-family: 'Great Vibes', cursive, 'Playfair Display', serif !important;
+        font-size: 2.2rem !important;
+        font-weight: 500 !important;
+        padding: 10px 30px !important;
+        border-radius: 35px !important;
+        border: 2px solid #d4af37 !important;
+        box-shadow: 0 10px 30px rgba(88, 24, 69, 0.6), 0 0 20px rgba(212, 175, 55, 0.5) !important;
+        transition: all 0.3s ease-in-out !important;
+        width: 100% !important;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6) !important;
+        cursor: pointer !important;
+        letter-spacing: 1px !important;
+    }
+
+    .hero-btn-container div.stButton > button:hover {
+        background: linear-gradient(135deg, #d4af37 0%, #aa7c11 50%, #581845 100%) !important;
+        color: #ffffff !important;
+        border-color: #f3e5ab !important;
+        box-shadow: 0 14px 35px rgba(212, 175, 55, 0.7), 0 0 30px rgba(212, 175, 55, 0.8) !important;
+        transform: translateY(-3px) scale(1.03) !important;
+    }
+
     .footer {
         text-align: center;
         font-size: 0.85rem;
@@ -256,30 +308,29 @@ if "opened" not in st.session_state:
 # ---------------------------------------------------------
 if not st.session_state.opened:
     # ---------------------------------------------------------
-    # 2. SIFIRA SIFIR 100vw x 100vh TAM EKRAN VİDEO HERO & ÜZERİNDE METİN VE BUTON
+    # 2. VİDEO KARTI & 'position: absolute; bottom: 30px;' OVERLAY BUTON
     # ---------------------------------------------------------
     video_b64 = get_video_base64()
     if video_b64:
         st.markdown(f"""
-        <div style='position: relative; width: 100vw; height: 100vh; margin: 0; padding: 0; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; overflow: hidden; background: #1a1a1a;'>
-            <video autoplay loop muted playsinline preload='auto' style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;'>
-                <source src='data:video/mp4;base64,{video_b64}' type='video/mp4'>
+        <div class="video-hero-card">
+            <video autoplay loop muted playsinline preload="auto" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+                <source src="data:video/mp4;base64,{video_b64}" type="video/mp4">
             </video>
-            <div style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.75) 100%); display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 40px 20px 60px 20px; box-sizing: border-box;'>
-                <div style='text-align: center; width: 100%; margin-top: 25vh;'>
-                    <h1 style="font-family: 'Great Vibes', cursive; font-size: 4.5rem; font-style: italic; color: #f3e5ab; margin: 0; text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.7);"><i>Gül&Ümit</i></h1>
-                    <p style="font-family: 'Playfair Display', serif; font-size: 1.35rem; color: #ffffff; margin-top: 10px; text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9);">Nişan Davetiyemize Hoş Geldiniz...</p>
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.7) 100%); display: flex; flex-direction: column; align-items: center; padding: 35px 15px; box-sizing: border-box;">
+                <div style="text-align: center; width: 100%;">
+                    <h1 style="font-family: 'Great Vibes', cursive; font-size: 4rem; font-style: italic; color: #f3e5ab; margin: 0; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.85), 0 0 15px rgba(212, 175, 55, 0.65);"><i>Gül&Ümit</i></h1>
+                    <p style="font-family: 'Playfair Display', serif; font-size: 1.25rem; color: #ffffff; margin-top: 8px; text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.9);">Nişan Davetiyemize Hoş Geldiniz...</p>
                 </div>
             </div>
-        </div>
+            <div class="hero-btn-container">
         """, unsafe_allow_html=True)
 
-        # Butonu videonun en altına sıfıra sıfır 100vh görünümünde doğrudan gömme:
-        st.markdown("<div style='margin-top: -110px; position: relative; z-index: 10; display: flex; justify-content: center;'>", unsafe_allow_html=True)
-        if st.button("Davetiyeyi Aç", use_container_width=True):
+        if st.button("Davetiyeyi Aç", use_container_width=True, key="hero_btn_open"):
             st.session_state.opened = True
             st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("</div></div>", unsafe_allow_html=True)
 
     else:
         st.markdown("<br><br>", unsafe_allow_html=True)
