@@ -330,11 +330,12 @@ else:
         st.markdown(f'<audio id="bg-audio" autoplay loop style="display:none;"><source src="{muzik_url}" type="audio/mp3"></audio>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 1. KARİKATÜR GÖRSELİ (B64 DATA URI & FLEXBOX İLE %100 GARANTİLİ VE ORTALANMIŞ)
+    # 1. KARİKATÜR GÖRSELİ (DOĞRUDAN ST.IMAGE İLE ORTALANMIŞ)
     # ---------------------------------------------------------
-    karikatur_b64 = resim_b64_al("karikatur_yeni.png")
-    if karikatur_b64:
-        st.markdown(f'<div style="display:flex;justify-content:center;width:100%;margin:10px 0;"><img src="data:image/png;base64,{karikatur_b64}" style="width:180px;height:auto;"></div>', unsafe_allow_html=True)
+    if os.path.exists("karikatur_yeni.png"):
+        c1, c2, c3 = st.columns([1, 1, 1])
+        with c2:
+            st.image("karikatur_yeni.png", width=180)
 
     # ---------------------------------------------------------
     # BAŞLIK VE ALT YAZI (TAM ORTALANMIŞ)
@@ -343,12 +344,23 @@ else:
     st.markdown("<p class='subtitle' style='text-align: center;'>Nişanlanıyoruz...</p>", unsafe_allow_html=True)
 
     # ---------------------------------------------------------
-    # 2. YÜZÜK GÖRSELİ (B64 DATA URI & FLEXBOX İLE %100 GARANTİLİ VE ORTALANMIŞ)
+    # 2. YÜZÜK GÖRSELİ (DİNAMİK DOSYA ARAMA & DOĞRUDAN ST.IMAGE İLE ORTALANMIŞ)
     # ---------------------------------------------------------
-    yuzuk_yolu = "nişan_yüzükleri_kurdele.png" if os.path.exists("nişan_yüzükleri_kurdele.png") else "nisan_yuzukleri_kurdele.png"
-    yuzuk_b64 = resim_b64_al(yuzuk_yolu)
-    if yuzuk_b64:
-        st.markdown(f'<div style="display:flex;justify-content:center;width:100%;margin:10px 0;"><img src="data:image/png;base64,{yuzuk_b64}" style="width:140px;height:auto;"></div>', unsafe_allow_html=True)
+    yuzuk_dosyasi = None
+    try:
+        for f in os.listdir("."):
+            if ("yuzuk" in f.lower() or "yüzük" in f.lower()) and f.lower().endswith(('.png', '.jpg', '.jpeg')):
+                yuzuk_dosyasi = f
+                break
+    except Exception:
+        pass
+    if not yuzuk_dosyasi and os.path.exists("engagement_rings_ribbon.png"):
+        yuzuk_dosyasi = "engagement_rings_ribbon.png"
+
+    if yuzuk_dosyasi:
+        c1, c2, c3 = st.columns([1, 1, 1])
+        with c2:
+            st.image(yuzuk_dosyasi, width=140)
 
     st.markdown("""
     <div class='card' style='text-align: center;'>
