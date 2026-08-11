@@ -374,7 +374,6 @@ if st.session_state.kapak_acik:
             st.session_state.kapak_acik = False
             st.rerun()
 else:
-    st.markdown("<h4 style='text-align:center; color:#6b1d2f;'>🎵 Nişan Müziğimiz</h4>", unsafe_allow_html=True)
     st.audio("https://raw.githubusercontent.com/alkan5505-cmd/online-davetiye/main/dugun_muzigi.mp3", format="audio/mpeg", autoplay=True, loop=True)
     st.markdown("---")
     # ---------------------------------------------------------
