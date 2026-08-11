@@ -314,20 +314,33 @@ st.markdown("""
 # ---------------------------------------------------------
 st.markdown(f"""
     <style>
-    #kapakKapsayici {{
+    #tamKapakOverlay {{
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background: #fdfbf7;
+        z-index: 999999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }}
+    .kapak-kapsayici-fixed {{
         position: relative;
-        max-width: 380px;
-        margin: 0 auto 20px auto;
+        max-width: 360px;
+        width: 90%;
         border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.25);
     }}
-    .kapak-video {{
+    .kapak-video-fixed {{
         width: 100%;
         display: block;
         border-radius: 16px;
     }}
-    .kapak-yazi-katmani {{
+    .kapak-yazi-katmani-fixed {{
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
         display: flex; flex-direction: column;
@@ -337,44 +350,48 @@ st.markdown(f"""
         padding: 15px; box-sizing: border-box;
         pointer-events: none;
     }}
-    .kapak-yazi-katmani h1 {{
+    .kapak-yazi-katmani-fixed h1 {{
         font-family: 'Great Vibes', cursive;
         font-size: 38px !important; margin: 0 0 8px 0 !important;
         color: #F5E6C8 !important; font-weight: normal !important;
         text-shadow: 0 2px 6px rgba(0,0,0,0.8);
     }}
-    .kapak-yazi-katmani p {{
+    .kapak-yazi-katmani-fixed p {{
         font-family: 'Playfair Display', serif;
         font-size: 16px !important; margin: 0 !important;
         color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }}
-    .davetiye-buton {{
-        display: block; width: 100%; max-width: 380px; margin: 0 auto 30px auto;
-        padding: 14px 20px; background-color: #6b1d2f; color: white;
-        border: 2px solid #D4AF37; border-radius: 30px; font-size: 18px;
-        font-weight: bold; text-align: center; cursor: pointer;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    .davetiye-buton-fixed {{
+        margin-top: 20px;
+        padding: 14px 35px;
+        background-color: #6b1d2f;
+        color: white;
+        border: 2px solid #D4AF37;
+        border-radius: 30px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }}
     </style>
 
-    <audio id="bg-audio" loop style="display:none;"><source src="{muzik_url}" type="audio/mp3"></audio>
+    <audio id="davetiyeSes" src="{muzik_url}" loop preload="auto"></audio>
 
-    <div id="kapakAlani">
-        <div id="kapakKapsayici">
-            <video autoplay muted playsinline loop class="kapak-video">
+    <div id="tamKapakOverlay">
+        <div class="kapak-kapsayici-fixed">
+            <video autoplay muted playsinline loop class="kapak-video-fixed">
                 <source src="https://res.cloudinary.com/sovenzsp/video/upload/v1786482075/giris.mp4" type="video/mp4">
             </video>
-            <div class="kapak-yazi-katmani">
-                <h1>Gül & Ümit</h1>
+            <div class="kapak-yazi-katmani-fixed">
+                <h1>Gül ve Ümit</h1>
                 <p>Nişan Davetiyemize Hoş Geldiniz...</p>
             </div>
         </div>
-        <button class="davetiye-buton" onclick="
-            document.getElementById('kapakAlani').style.display = 'none';
-            var audioElements = parent.document.getElementsByTagName('audio');
-            if(audioElements.length > 0) {{ audioElements[0].play(); }}
-            var localAudio = document.getElementsByTagName('audio');
-            if(localAudio.length > 0) {{ localAudio[0].play(); }}
+        <button class="davetiye-buton-fixed" onclick="
+            var box = document.getElementById('tamKapakOverlay') || (window.parent && window.parent.document.getElementById('tamKapakOverlay'));
+            if(box) {{ box.style.display = 'none'; }}
+            var audio = document.getElementById('davetiyeSes') || (window.parent && window.parent.document.getElementById('davetiyeSes'));
+            if(audio) {{ audio.play().catch(function(e){{ console.log(e); }}); }}
         ">Davetiyeyi Aç 💌</button>
     </div>
 """, unsafe_allow_html=True)
