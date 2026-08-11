@@ -354,23 +354,22 @@ else:
         st.audio(audio_url, format="audio/mp3", autoplay=True, loop=True)
 
     # ---------------------------------------------------------
-    # ÜST BÖLÜM: YUVARLAK STİCKER KARİKATÜR GÖRSELİ VE BAŞLIK
+    # ÜST BÖLÜM: DOĞAL ŞEFFAF STİCKER KARİKATÜR GÖRSELİ VE BAŞLIK
     # ---------------------------------------------------------
     karikatur_b64 = get_file_base64("karikatur_yeni.png")
     if karikatur_b64:
         st.markdown(f"""
         <div style='text-align: center; margin: 20px auto 10px auto; width: 100%; display: flex; justify-content: center;'>
             <img src='data:image/png;base64,{karikatur_b64}' style='
-                width: 220px;
-                height: 220px;
-                max-width: 80vw;
-                max-height: 80vw;
-                border-radius: 50%;
-                object-fit: cover;
-                border: 4px solid #ffffff;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 20px rgba(212, 175, 55, 0.35);
+                max-width: 240px;
+                width: 80%;
+                height: auto;
                 display: block;
                 margin: 0 auto;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                border-radius: 0;
             '>
         </div>
         """, unsafe_allow_html=True)
