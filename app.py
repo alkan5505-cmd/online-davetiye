@@ -653,7 +653,7 @@ else:
                     res = requests.post(FORM_RESPONSE_URL, data=payload, headers=headers)
                     if res.status_code == 200:
                         st.success("Güzel dileğiniz iletildi, teşekkür ederiz! ❤️")
-                        time.sleep(1)
+                        time.sleep(1.5)
                         st.rerun()
                     else:
                         st.error("Gönderilirken bir sorun oluştu, lütfen tekrar deneyin.")
@@ -665,23 +665,31 @@ else:
     st.markdown("---")
     st.markdown("<h4 style='text-align: center; color: #6b1d2f;'>✨ Gelen Güzel Dilekler</h4>", unsafe_allow_html=True)
 
-    # Önbellek engelleyici zaman damgası eklenmiş canlı CSV okuma
-    sheet_csv_url = f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?output=csv&t={int(time.time())}"
+    # GECİKMESİZ CANLI VERİTABANI BAĞLANTISI (0 Saniye Gecikme)
+    sheet_id = "1tQyFvRunLuiR3olth9tO52qDplBybEcVcsn9aBKWXo"
+    gid = "1893750835"
+    live_sheet_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}&t={int(time.time())}"
+    backup_sheet_csv_url = f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?output=csv&t={int(time.time())}"
 
+    df = None
     try:
-        df = pd.read_csv(sheet_csv_url)
-        if not df.empty:
-            for index, row in df.iloc[::-1].iterrows():
-                ad = row.iloc[1] if len(row) > 1 and pd.notna(row.iloc[1]) else "Anonim"
-                not_metni = row.iloc[2] if len(row) > 2 and pd.notna(row.iloc[2]) else ""
-                if not_metni and str(not_metni).strip():
-                    st.markdown(f"""
-                        <div style="background-color: #fcf8f2; border-left: 4px solid #6b1d2f; padding: 12px 16px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                            <strong style="color: #6b1d2f; font-size: 15px;">{ad}</strong><br>
-                            <span style="color: #444; font-size: 14px;">{not_metni}</span>
-                        </div>
-                    """, unsafe_allow_html=True)
-        else:
-            st.info("Henüz dilek yazılmamış. İlk dileği siz yazın! 💫")
-    except Exception as e:
-        st.info("Dilekler yükleniyor...")
+        df = pd.read_csv(live_sheet_csv_url)
+    except Exception:
+        try:
+            df = pd.read_csv(backup_sheet_csv_url)
+        except Exception:
+            df = None
+
+    if df is not None and not df.empty:
+        for index, row in df.iloc[::-1].iterrows():
+            ad = row.iloc[1] if len(row) > 1 and pd.notna(row.iloc[1]) else "Anonim"
+            not_metni = row.iloc[2] if len(row) > 2 and pd.notna(row.iloc[2]) else ""
+            if not_metni and str(not_metni).strip():
+                st.markdown(f"""
+                    <div style="background-color: #fcf8f2; border-left: 4px solid #6b1d2f; padding: 12px 16px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <strong style="color: #6b1d2f; font-size: 15px;">{ad}</strong><br>
+                        <span style="color: #444; font-size: 14px;">{not_metni}</span>
+                    </div>
+                """, unsafe_allow_html=True)
+    else:
+        st.info("Henüz dilek yazılmamış. İlk dileği siz yazın! 💫")
