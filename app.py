@@ -294,37 +294,18 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# SAF HTML / JS MODAL GİRİŞ KAPAK EKRANI VE SES TETİKLEYİCİSİ
+# SAF HTML / JS SADE KAPAK EKRANI (SES DÖNGÜSÜZ & KESİNTİSİZ MUTE VIDEO)
 # ---------------------------------------------------------
 st.markdown(f"""
 <div id="kapakEkrani" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#fdfbf7; z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; box-sizing:border-box;">
     <h1 style="font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: #6b1d2f; margin: 0 0 10px 0; text-shadow: 1px 1px 4px rgba(212,175,55,0.4);"><i>Gül & Ümit</i></h1>
     <p style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #5a4b41; margin-bottom: 20px;">Nişan Davetiyemize Hoş Geldiniz...</p>
-    <video id="myVideo" playsinline muted loop style="max-width:350px; width:90%; height:auto; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.2);">
+    <video autoplay muted playsinline loop style="max-width:350px; width:90%; height:auto; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.15);">
         <source src="{video_url}" type="video/mp4">
         <source src="giris.mp4" type="video/mp4">
     </video>
-    <audio id="myAudio" src="{muzik_url}" preload="auto"></audio>
-    <button onclick="davetiyeBaslat()" style="margin-top:25px; padding:15px 35px; background:#6b1d2f; color:white; border:2px solid #D4AF37; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.2);">Davetiyeyi Aç 💌</button>
+    <button onclick="document.getElementById('kapakEkrani').style.display='none'" style="margin-top:25px; padding:14px 35px; background:#6b1d2f; color:white; border:2px solid #D4AF37; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.15);">Davetiyeyi Aç 💌</button>
 </div>
-
-<script>
-    // Sayfa yüklendiğinde videoyu önizleme olarak sessiz başlat
-    setTimeout(function() {{
-        var v = document.getElementById("myVideo");
-        if(v) {{ v.play().catch(function(e){{}}); }}
-    }}, 500);
-
-    // Doğrudan HTML butonuna basıldığı an sesi %100 aç ve kapağı kapat
-    function davetiyeBaslat() {{
-        var a = document.getElementById("myAudio");
-        var v = document.getElementById("myVideo");
-        if(a) {{ a.play(); }}
-        if(v) {{ v.muted = false; v.play(); }}
-        var k = document.getElementById("kapakEkrani");
-        if(k) {{ k.style.display = "none"; }}
-    }}
-</script>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
