@@ -344,7 +344,7 @@ else:
     # ---------------------------------------------------------
     karikatur_b64 = resim_b64_oku("karikatur_yeni.png")
     if karikatur_b64:
-        st.markdown(f'<div style="text-align: center; width: 100%; margin: 10px 0;"><img src="data:image/png;base64,{karikatur_b64}" style="width: 180px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="data:image/png;base64,{karikatur_b64}" style="width: 180px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
 
     # ---------------------------------------------------------
     # BAŞLIK VE ALT YAZI (TAM ORTALANMIŞ)
@@ -355,10 +355,15 @@ else:
     # ---------------------------------------------------------
     # 2. YÜZÜK GÖRSELİ (B64 DATA URI & HTML %100 ORTALANMIŞ)
     # ---------------------------------------------------------
-    yuzuk_yolu = "nisan_yuzukleri" if os.path.exists("nisan_yuzukleri") else ("nisan_yuzukleri.png" if os.path.exists("nisan_yuzukleri.png") else ("nisan_yuzukleri_kurdele.png" if os.path.exists("nisan_yuzukleri_kurdele.png") else ""))
+    yuzuk_yolu = ""
+    for isim in ["nısan_yuzuk.png", "nisan_yuzuk.png", "nisan_yuzukleri.png", "nisan_yuzukleri_kurdele.png", "nişan_yüzükleri_kurdele.png"]:
+        if os.path.exists(isim):
+            yuzuk_yolu = isim
+            break
+
     yuzuk_b64 = resim_b64_oku(yuzuk_yolu)
     if yuzuk_b64:
-        st.markdown(f'<div style="text-align: center; width: 100%; margin: 10px 0;"><img src="data:image/png;base64,{yuzuk_b64}" style="width: 140px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align: center; width: 100%; margin: 15px 0;"><img src="data:image/png;base64,{yuzuk_b64}" style="width: 140px; height: auto; display: inline-block;"></div>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class='card' style='text-align: center;'>
