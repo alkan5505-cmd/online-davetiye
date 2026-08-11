@@ -592,4 +592,39 @@ else:
         if submit_lcv:
             if guest_name.strip() == "":
                 st.error("Lütfen adınızı ve soyadınızı giriniz.")
-        
+            else:
+                now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                new_data = pd.DataFrame([{
+                    "Tarih": now_str,
+                    "Ad Soyad": guest_name,
+                    "Katılım Durumu": attendance,
+                    "Kişi Sayısı": guest_count if "geleceğim" in attendance else 0,
+                    "Not": note
+                }])
+                new_data.to_csv(LCV_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
+                st.success("Katılım bilginiz kaydoldu. Teşekkür ederiz!")
+
+    # ---------------------------------------------------------
+    # DİLEK & TEBRİK ALANI VE FORMU
+    # ---------------------------------------------------------
+    st.markdown("---")
+    st.markdown("<h3 style='text-align: center; color: #6b1d2f;'>💌 Dilek ve Tebrikleriniz</h3>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #555;'>Gül & Ümit çiftine iletmek istediğiniz güzel dileklerinizi yazabilirsiniz.</p>", unsafe_allow_html=True)
+
+    with st.form("dilek_formu", clear_on_submit=True):
+        ad_soyad = st.text_input("Adınız Soyadınız")
+        mesaj = st.text_area("Mesajınız / Notunuz", placeholder="Çiftimize mutluluklar dileriz...")
+        gonder_btn = st.form_submit_button("Dileğinizi İletin ✨", use_container_width=True)
+
+        if gonder_btn:
+            if ad_soyad.strip() and mesaj.strip():
+                now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                new_msg = pd.DataFrame([{
+                    "Tarih": now_str,
+                    "Gönderen": ad_soyad,
+                    "Mesaj": mesaj
+                }])
+                new_msg.to_csv(MSG_FILE, mode='a', header=False, index=False, encoding="utf-8-sig")
+                st.success("Güzel dilekleriniz çiftimize başarıyla iletildi! Teşekkür ederiz. ❤️")
+            else:
+                st.error("Lütfen adınızı ve mesajınızı doldurunuz.")
