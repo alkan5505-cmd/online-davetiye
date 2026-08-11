@@ -625,16 +625,19 @@ else:
                 st.success("Katılım bilginiz kaydoldu. Teşekkür ederiz!")
 
     # ---------------------------------------------------------
-    # DİLEK & TEBRİK ALANI VE FORMU (NATIVE STREAMLIT & ARKA PLAN GOOGLE SHEETS)
+    # DİLEK & TEBRİK ALANI VE FORMU (NATIVE STREAMLIT & GOOGLE SHEETS & LOCAL CACHE)
     # ---------------------------------------------------------
     st.markdown("---")
     st.markdown("<h3 style='text-align: center; color: #6b1d2f;'>💌 Dilek ve Tebrikleriniz</h3>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center;'>Gül & Ümit çiftine iletmek istediğiniz güzel dileklerinizi yazabilirsiniz.</p>", unsafe_allow_html=True)
 
-    # Google Form Arka Plan Gönderim Adresi
+    # 1. Anlık Gönderim İçin Yerel Hafıza Başlatma
+    if "local_dilekler" not in st.session_state:
+        st.session_state["local_dilekler"] = []
+
     FORM_RESPONSE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSddMMZg3SJCstci-0vV_XHhrKvI0Bu5j3knANntQekX7X-36g/formResponse"
 
-    # Davetiyenin Kendi Şık Formu
+    # Davetiyenin Şık Formu
     with st.form("dilek_formu", clear_on_submit=True):
         ad_soyad = st.text_input("Adınız ve Soyadınız")
         mesaj = st.text_area("Mesajınız / Notunuz", placeholder="Çiftimize mutluluklar dileriz...")
@@ -644,20 +647,21 @@ else:
             if ad_soyad.strip() and mesaj.strip():
                 try:
                     payload = {
-                        "entry.7361262": ad_soyad,
-                        "entry.570319252": mesaj
+                        "entry.7361262": ad_soyad.strip(),
+                        "entry.570319252": mesaj.strip()
                     }
-                    # Bot korumasını geçen gerçek tarayıcı kimliği
                     headers = {
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
                     }
-                    res = requests.post(FORM_RESPONSE_URL, data=payload, headers=headers)
-                    if res.status_code == 200:
-                        st.success("Güzel dileğiniz iletildi, teşekkür ederiz! ❤️")
-                        time.sleep(1.5)
-                        st.rerun()
-                    else:
-                        st.error("Gönderilirken bir sorun oluştu, lütfen tekrar deneyin.")
+                    # Google Forms'a Gönder
+                    requests.post(FORM_RESPONSE_URL, data=payload, headers=headers)
+                    
+                    # Anında Ekranda Gösterilmek Üzere Hafızaya Ekle
+                    st.session_state["local_dilekler"].insert(0, (ad_soyad.strip(), mesaj.strip()))
+                    
+                    st.success("Güzel dileğiniz iletildi, teşekkür ederiz! ❤️")
+                    time.sleep(1)
+                    st.rerun()
                 except Exception as e:
                     st.error("Bir hata oluştu, lütfen tekrar deneyin.")
             else:
@@ -666,38 +670,63 @@ else:
     st.markdown("---")
     st.markdown("<h4 style='text-align: center; color: #6b1d2f;'>✨ Gelen Güzel Dilekler</h4>", unsafe_allow_html=True)
 
-    # Google E-Tablo'dan Engellere Takılmadan Canlı Veri Çekme
-    sheet_id = "1tQyFvRunLuiR3olth9tO52qDplBybEcVcsn9aBKWXo"
-    gid = "1893750835"
-    live_csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}&t={int(time.time())}"
-    backup_csv_url = f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?output=csv&t={int(time.time())}"
+    # 2. Google E-Tablo'dan Güvenli Veri Çekme Fonksiyonu
+    def get_google_sheets_dilekleri():
+        gid = "1893750835"
+        sheet_id = "1tQyFvRunLuiR3olth9tO52qDplBybEcVcsn9aBKWXo"
+        urls = [
+            f"https://docs.google.com/spreadsheets/d/e/2PACX-1vRzOuNfL1s5byc7arUw5immtWh9yJtK4UBBW3jvUkvjyxjsO5Ty8C5spw7CNrNcbuYJpePJuxFXiEle/pub?gid={gid}&single=true&output=csv&t={int(time.time())}",
+            f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}&t={int(time.time())}"
+        ]
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
+        
+        dilekler = []
+        for url in urls:
+            try:
+                res = requests.get(url, headers=headers, timeout=5)
+                # Yanıt HTML değilse ve 200 ise işleyelim
+                if res.status_code == 200 and not res.text.strip().startswith("<"):
+                    df = pd.read_csv(io.StringIO(res.text))
+                    if not df.empty:
+                        for _, row in df.iloc[::-1].iterrows():
+                            vals = [str(v).strip() for v in row.values if pd.notna(v)]
+                            if len(vals) >= 3:
+                                ad = vals[1]
+                                not_metni = vals[2]
+                                if not_metni and not_metni.lower() != "nan":
+                                    dilekler.append((ad, not_metni))
+                            elif len(vals) == 2:
+                                ad = vals[0]
+                                not_metni = vals[1]
+                                if not_metni and not_metni.lower() != "nan":
+                                    dilekler.append((ad, not_metni))
+                    if dilekler:
+                        break
+            except Exception:
+                continue
+        return dilekler
 
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    }
+    # Hem Google Sheets'ten Gelenleri Hem de Anlık Yazılanları Birleştir
+    online_dilekler = get_google_sheets_dilekleri()
+    tum_dilekler = []
 
-    df = None
-    try:
-        response = requests.get(live_csv_url, headers=headers, timeout=5)
-        if response.status_code == 200:
-            df = pd.read_csv(io.StringIO(response.text))
-        else:
-            response_backup = requests.get(backup_csv_url, headers=headers, timeout=5)
-            if response_backup.status_code == 200:
-                df = pd.read_csv(io.StringIO(response_backup.text))
-    except Exception:
-        df = None
+    # Önce anlık yazılanları ekle
+    for d in st.session_state["local_dilekler"]:
+        if d not in tum_dilekler:
+            tum_dilekler.append(d)
 
-    if df is not None and not df.empty:
-        for index, row in df.iloc[::-1].iterrows():
-            ad = row.iloc[1] if len(row) > 1 and pd.notna(row.iloc[1]) else "Anonim"
-            not_metni = row.iloc[2] if len(row) > 2 and pd.notna(row.iloc[2]) else ""
-            if not_metni and str(not_metni).strip():
-                st.markdown(f"""
-                    <div style="background-color: #fcf8f2; border-left: 4px solid #6b1d2f; padding: 12px 16px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                        <strong style="color: #6b1d2f; font-size: 15px;">{ad}</strong><br>
-                        <span style="color: #444; font-size: 14px;">{not_metni}</span>
-                    </div>
-                """, unsafe_allow_html=True)
+    # Sonra Google Sheets'ten gelenleri ekle
+    for d in online_dilekler:
+        if d not in tum_dilekler:
+            tum_dilekler.append(d)
+
+    if tum_dilekler:
+        for ad, not_metni in tum_dilekler:
+            st.markdown(f"""
+                <div style="background-color: #fcf8f2; border-left: 4px solid #6b1d2f; padding: 12px 16px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <strong style="color: #6b1d2f; font-size: 15px;">{ad}</strong><br>
+                    <span style="color: #444; font-size: 14px;">{not_metni}</span>
+                </div>
+            """, unsafe_allow_html=True)
     else:
         st.info("Henüz dilek yazılmamış. İlk dileği siz yazın! 💫")
