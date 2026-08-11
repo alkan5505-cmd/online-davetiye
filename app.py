@@ -312,18 +312,18 @@ if not st.session_state.opened:
             <source src="{video_url}" type="video/mp4">
             <source src="giris.mp4" type="video/mp4">
         </video>
+        <audio id="davetiyeSesi" src="{muzik_url}" preload="auto"></audio>
         <script>
-            function sesiAcVeOynat() {{
-                var video = document.getElementById("girisVideo");
-                if (video) {{
-                    video.muted = false;
-                    video.volume = 1.0;
-                    video.play().catch(function(e){{ console.log(e); }});
+            function sesiCal() {{
+                var ses = document.getElementById("davetiyeSesi");
+                if (ses) {{
+                    ses.currentTime = 0;
+                    ses.play().catch(function(e) {{ console.log(e); }});
                 }}
             }}
-            // Kullanıcı ekrana veya 'Davetiyeyi Aç' butonuna dokunduğu ilk anda sesi aç
-            document.addEventListener("click", sesiAcVeOynat, {{ once: true }});
-            document.addEventListener("touchstart", sesiAcVeOynat, {{ once: true }});
+            // Kullanıcı ekrana dokunduğu veya butona bastığı ilk anda sesi bağımsız olarak oynat
+            document.addEventListener("click", sesiCal, {{ once: true }});
+            document.addEventListener("touchstart", sesiCal, {{ once: true }});
         </script>
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.7) 100%); display: flex; flex-direction: column; align-items: center; padding: 35px 15px; box-sizing: border-box;">
             <div style="text-align: center; width: 100%;">
